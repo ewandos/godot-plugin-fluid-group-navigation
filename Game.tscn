@@ -1,0 +1,49 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Unit Selector.gd" type="Script" id=1]
+[ext_resource path="res://unit.png" type="Texture" id=2]
+[ext_resource path="res://Unit.gd" type="Script" id=3]
+[ext_resource path="res://Outline2D.gdshader" type="Shader" id=4]
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 4 )
+shader_param/line_color = Color( 1, 1, 1, 1 )
+shader_param/line_thickness = 0.0
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 32.0156
+
+[node name="Game" type="Node2D"]
+
+[node name="Unit" type="KinematicBody2D" parent="."]
+position = Vector2( 493, 288 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="Unit"]
+material = SubResource( 2 )
+scale = Vector2( 0.176, 0.176 )
+texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Unit"]
+shape = SubResource( 1 )
+
+[node name="Unit2" type="KinematicBody2D" parent="."]
+position = Vector2( 847, 119 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="Unit2"]
+material = SubResource( 2 )
+scale = Vector2( 0.176, 0.176 )
+texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Unit2"]
+shape = SubResource( 1 )
+
+[node name="Unit Selector" type="Node2D" parent="."]
+script = ExtResource( 1 )
