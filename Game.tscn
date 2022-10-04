@@ -47,3 +47,4 @@ shape = SubResource( 1 )
 
 [node name="Unit Selector" type="Node2D" parent="."]
 script = ExtResource( 1 )
+color = Color( 0.247059, 0.74902, 0.254902, 0.313726 )
