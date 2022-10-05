@@ -1,17 +1,15 @@
-extends KinematicBody2D
+extends CharacterBody2D
 class_name Unit
 
+@export var color: Color
 var is_selected := false
 
-onready var sprite: Sprite = $Sprite
-
-func _ready():
-	sprite.material = sprite.material.duplicate()
+@onready var sprite: Sprite2D = $Sprite2D
 
 func select() -> void:
-	sprite.material.set('shader_param/line_thickness', 10.0)
+	sprite.modulate = color
 	is_selected = true
 	
 func deselect() -> void:
-	sprite.material.set('shader_param/line_thickness', 0.0)
-	is_selected = false;
+	sprite.modulate = Color.WHITE
+	is_selected = false
