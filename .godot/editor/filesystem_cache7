@@ -1,9 +1,11 @@
 0b7126e0c6e86d3ec295a72f5aa6e0bd
-::res://::1664960828
+::res://::1665069447
 default_env.tres::Environment::-1::1664954023::0::1::::<><>::
-Game.tscn::PackedScene::8629164842984648082::1664957396::0::1::::<><>::res://Unit Selector.gd<>uid://cw2ut2e27tboj<>res://Unit.gd
+Game.tscn::PackedScene::8629164842984648082::1665069406::0::1::::<><>::res://Unit Selector.gd<>uid://eha3a5h4cb0v<>uid://cw2ut2e27tboj<>res://Unit.gd
 icon.png::CompressedTexture2D::919427695564216164::1663426476::1664954035::1::::<><>::
+medievalRTS_spritesheet@2.png::CompressedTexture2D::295256067760899883::1665061918::1665061919::1::::<><>::
+Pathfinder.gd::GDScript::-1::1664965189::0::1::::<>Node2D<>::
 SelectionRectangle.gd::GDScript::-1::1664954023::0::1::::<>Node2D<>::
-Unit Selector.gd::GDScript::-1::1664957346::0::1::::<>Node2D<>::
-Unit.gd::GDScript::-1::1664956238::0::1::::Unit<>CharacterBody2D<>::
+Unit Selector.gd::GDScript::-1::1665061743::0::1::::<>Node2D<>::
+Unit.gd::GDScript::-1::1665069397::0::1::::Unit<>CharacterBody2D<>::
 unit.png::CompressedTexture2D::6373983822301989985::1663431771::1664954035::1::::<><>::
