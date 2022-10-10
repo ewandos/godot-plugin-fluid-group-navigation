@@ -33,6 +33,7 @@ func _input(event):
 			var query = PhysicsShapeQueryParameters2D.new()
 			query.set_shape(select_rectangle)
 			query.transform = Transform2D(0, (drag_end + drag_start) / 2)
+			query.collide_with_areas = true
 			selected_units = space.intersect_shape(query)
 			for unit in selected_units:
 				unit.collider.select()

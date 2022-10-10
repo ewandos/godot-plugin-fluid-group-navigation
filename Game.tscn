@@ -1,9 +1,8 @@
-[gd_scene load_steps=38 format=3 uid="uid://du7bc4mp3lrgk"]
+[gd_scene load_steps=36 format=3 uid="uid://du7bc4mp3lrgk"]
 
 [ext_resource type="Script" path="res://Unit Selector.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://eha3a5h4cb0v" path="res://medievalRTS_spritesheet@2.png" id="1_jmuni"]
-[ext_resource type="Texture2D" uid="uid://cw2ut2e27tboj" path="res://unit.png" id="2"]
-[ext_resource type="Script" path="res://Unit.gd" id="3"]
+[ext_resource type="PackedScene" uid="uid://irms1d6lmat6" path="res://Unit.tscn" id="2_bjfk5"]
 [ext_resource type="Script" path="res://PathRenderer.gd" id="5_g21f1"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_gprqi"]
@@ -231,9 +230,6 @@ tile_size = Vector2i(128, 128)
 navigation_layer_0/layers = 1
 sources/0 = SubResource("TileSetAtlasSource_g5aoy")
 
-[sub_resource type="CircleShape2D" id="1"]
-radius = 32.0156
-
 [node name="Game" type="Node2D"]
 
 [node name="Map" type="TileMap" parent="."]
@@ -241,20 +237,12 @@ tile_set = SubResource("TileSet_8n8hl")
 format = 2
 layer_0/tile_data = PackedInt32Array(0, 131072, 7, 1, 131072, 7, 2, 131072, 7, 65538, 131072, 7, 65537, 131072, 7, 65536, 131072, 7, 131072, 131072, 7, 131073, 131072, 7, 131074, 131072, 7, 3, 131072, 7, 65539, 131072, 7, 131075, 131072, 7, 196611, 131072, 7, 196610, 131072, 7, 196609, 131072, 7, 196608, 131072, 7, 262144, 131072, 7, 262145, 131072, 7, 262146, 131072, 7, 262147, 131072, 7, 262152, 131072, 7, 262151, 131072, 7, 196615, 131072, 7, 196614, 131072, 7, 131078, 131072, 7, 131077, 131072, 7, 65541, 262144, 6, 65540, 65536, 7, 4, 131072, 7, 5, 131072, 7, 6, 131072, 0, 7, 131072, 7, 8, 131072, 7, 65544, 131072, 7, 131080, 131072, 7, 131079, 131072, 7, 65542, 131072, 7, 65543, 131072, 7, 196616, 131072, 7, 196613, 131072, 7, 196612, 131072, 7, 262148, 65536, 7, 262149, 131072, 7, 262150, 131072, 7, 131076, 131072, 7, -1, 131072, 7, -65536, 131072, 7, -65535, 131072, 7, -65534, 131072, 7, -65533, 131072, 7, -65532, 131072, 7, -65531, 131072, 7, -65530, 131072, 7, -65529, 131072, 7, -65528, 131072, 7, -65527, 131072, 7, 9, 131072, 7, 65545, 131072, 7, 131081, 131072, 7, 196617, 131072, 7, 262153, 131072, 7, 327689, 131072, 7, 327688, 131072, 7, 327687, 131072, 7, 327686, 131072, 7, 327685, 131072, 0, 327684, 131072, 7, 327679, 131072, 7, 393215, 131072, 7, 327680, 131072, 7, 327681, 131072, 7, 327682, 131072, 7, 327683, 131072, 7, 262143, 131072, 7, 196607, 131072, 7, 131071, 131072, 7, 65535, 131072, 7)
 
-[node name="Unit" type="CharacterBody2D" parent="." groups=["unit"]]
-position = Vector2(124, 341)
-script = ExtResource("3")
-color = Color(1, 0.607843, 0.580392, 1)
-metadata/_edit_group_ = true
+[node name="Unit" parent="." instance=ExtResource("2_bjfk5")]
+speed = 2.0
 
-[node name="Sprite2D" type="Sprite2D" parent="Unit"]
-scale = Vector2(0.176, 0.176)
-texture = ExtResource("2")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Unit"]
-shape = SubResource("1")
-
-[node name="NavigationAgent2d" type="NavigationAgent2D" parent="Unit"]
+[node name="Unit2" parent="." instance=ExtResource("2_bjfk5")]
+position = Vector2(212, 482)
+speed = 2.0
 
 [node name="Unit Selector" type="Node2D" parent="."]
 script = ExtResource("1")

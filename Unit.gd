@@ -1,7 +1,8 @@
-extends CharacterBody2D
+extends Area2D
 class_name Unit
 
 @export var color: Color
+@export var speed: float = 1.0
 var is_selected := false
 
 @onready var sprite: Sprite2D = $Sprite2D
@@ -17,9 +18,10 @@ func _input(event):
 		agent.set_target_location(get_viewport().get_mouse_position())
 		
 func _physics_process(delta: float) -> void:
+	if (agent.get_target_location() == Vector2.ZERO): return
 	var next_location = agent.get_next_location()
 	var v = (next_location - global_position).normalized()
-	agent.set_velocity(v)
+	agent.set_velocity(v * speed)
 
 func on_velocity_computed(safe_velocity: Vector2) -> void:
 	position += safe_velocity
@@ -29,7 +31,6 @@ func on_path_changed() -> void:
 
 func on_target_reached() -> void:
 	print("reached goal")
-	get_tree().quit()
 
 func select() -> void:
 	sprite.modulate = color

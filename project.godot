@@ -9,7 +9,7 @@
 config_version=5
 
 _global_script_classes=[{
-"base": "CharacterBody2D",
+"base": "Area2D",
 "class": &"Unit",
 "language": &"GDScript",
 "path": "res://Unit.gd"
