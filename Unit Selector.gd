@@ -20,19 +20,20 @@ func _input(event):
 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
-			for unit in selected_units:
-				unit.collider.deselect();
-			selected_units = []
 			dragging = true
 			drag_start = event.position
 			
 		# mouse button event fires on press and release
 		elif dragging:
 			dragging = false
+			for unit in selected_units:
+				unit.collider.deselect();
+			selected_units = []
 			var space = get_world_2d().direct_space_state
 			var query = PhysicsShapeQueryParameters2D.new()
 			query.set_shape(select_rectangle)
 			query.transform = Transform2D(0, (drag_end + drag_start) / 2)
+			query.collide_with_areas = true
 			selected_units = space.intersect_shape(query)
 			for unit in selected_units:
 				unit.collider.select()
