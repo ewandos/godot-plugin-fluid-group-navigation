@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://eha3a5h4cb0v"
-path="res://.godot/imported/medievalRTS_spritesheet@2.png-cc5dfa6f34b66991f434966795f98f0e.ctex"
+uid="uid://btu4jf4cosvf7"
+path="res://.godot/imported/tile.jpg-1eac959f50cd505b85c978f09e75d657.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://medievalRTS_spritesheet@2.png"
-dest_files=["res://.godot/imported/medievalRTS_spritesheet@2.png-cc5dfa6f34b66991f434966795f98f0e.ctex"]
+source_file="res://tile.jpg"
+dest_files=["res://.godot/imported/tile.jpg-1eac959f50cd505b85c978f09e75d657.ctex"]
 
 [params]
 
