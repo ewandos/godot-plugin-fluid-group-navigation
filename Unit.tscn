@@ -1,17 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://irms1d6lmat6"]
+[gd_scene load_steps=5 format=3 uid="uid://c8lvdcagwlymp"]
 
 [ext_resource type="Script" path="res://Unit.gd" id="1_kksq3"]
 [ext_resource type="Texture2D" uid="uid://cw2ut2e27tboj" path="res://unit.png" id="2_wydow"]
+[ext_resource type="Script" path="res://AgentMovement.gd" id="3_vhx41"]
 
 [sub_resource type="CircleShape2D" id="1"]
 radius = 30.0
 
-[node name="Unit" type="Area2D" groups=["unit"]]
+[node name="Unit" type="CharacterBody2D" groups=["unit"]]
 position = Vector2(448, 125)
 collision_mask = 0
 script = ExtResource("1_kksq3")
 color = Color(1, 0.607843, 0.580392, 1)
-metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.176, 0.176)
@@ -20,8 +20,5 @@ texture = ExtResource("2_wydow")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("1")
 
-[node name="NavigationAgent2d" type="NavigationAgent2D" parent="."]
-target_desired_distance = 20.0
-avoidance_enabled = true
-radius = 30.0
-max_speed = 1000.0
+[node name="AgentMovement" type="Node2D" parent="." groups=["agent"]]
+script = ExtResource("3_vhx41")

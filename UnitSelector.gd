@@ -1,9 +1,12 @@
+# THIS WON'T BE PART OF THE PLUGIN
+
 extends Node2D
 
 @export var color: Color
+signal selection_finished
 
 var dragging := false
-var selected_units := []
+var selected_units: Array[Unit]= []
 var drag_start := Vector2.ZERO
 var drag_end := Vector2.ZERO
 var select_rectangle := RectangleShape2D.new()
@@ -27,16 +30,20 @@ func _input(event):
 		elif dragging:
 			dragging = false
 			for unit in selected_units:
-				unit.collider.deselect();
+				unit.deselect();
 			selected_units = []
 			var space = get_world_2d().direct_space_state
 			var query = PhysicsShapeQueryParameters2D.new()
 			query.set_shape(select_rectangle)
 			query.transform = Transform2D(0, (drag_end + drag_start) / 2)
-			query.collide_with_areas = true
-			selected_units = space.intersect_shape(query)
-			for unit in selected_units:
-				unit.collider.select()
+			query.collide_with_areas = false
+			var results = space.intersect_shape(query)
+			
+			for result in results:
+				selected_units.append(result.collider)
+				result.collider.select()
+				
+			selection_finished.emit(selected_units)
 			_reset()
 
 func _draw() -> void:

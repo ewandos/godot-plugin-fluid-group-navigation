@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://du7bc4mp3lrgk"]
+[gd_scene load_steps=10 format=3 uid="uid://dklwjhqb1htrj"]
 
-[ext_resource type="Script" path="res://Unit Selector.gd" id="1"]
+[ext_resource type="Script" path="res://UnitSelector.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://btu4jf4cosvf7" path="res://tile.jpg" id="1_yopa8"]
-[ext_resource type="PackedScene" uid="uid://irms1d6lmat6" path="res://Unit.tscn" id="2_bjfk5"]
-[ext_resource type="Script" path="res://PathRenderer.gd" id="5_g21f1"]
+[ext_resource type="PackedScene" uid="uid://c8lvdcagwlymp" path="res://Unit.tscn" id="2_bjfk5"]
+[ext_resource type="Script" path="res://NavigationSystem.gd" id="4_2bkc2"]
+[ext_resource type="Script" path="res://SelectionManager.gd" id="5_6ui6o"]
+[ext_resource type="Script" path="res://PathRenderer.gd" id="6_vmfsf"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_yr1mo"]
 vertices = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
@@ -36,9 +38,15 @@ speed = 2.0
 position = Vector2(458, 387)
 speed = 2.0
 
-[node name="Unit Selector" type="Node2D" parent="."]
+[node name="NavigationSystem" type="Node" parent="."]
+script = ExtResource("4_2bkc2")
+
+[node name="SelectionManager" type="Node" parent="NavigationSystem"]
+script = ExtResource("5_6ui6o")
+
+[node name="UnitSelector" type="Node2D" parent="NavigationSystem"]
 script = ExtResource("1")
 color = Color(0.247059, 0.74902, 0.254902, 0.313726)
 
 [node name="PathRenderer" type="Node2D" parent="."]
-script = ExtResource("5_g21f1")
+script = ExtResource("6_vmfsf")
