@@ -1,6 +1,7 @@
 # THIS WON'T BE PART OF THE PLUGIN
 
 extends Node2D
+class_name Selector
 
 @export var color: Color
 signal selection_finished

@@ -1,9 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://dklwjhqb1htrj"]
+[gd_scene load_steps=10 format=3 uid="uid://u2i4x6ud7d7d"]
 
 [ext_resource type="Script" path="res://UnitSelector.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://btu4jf4cosvf7" path="res://tile.jpg" id="1_yopa8"]
-[ext_resource type="PackedScene" uid="uid://c8lvdcagwlymp" path="res://Unit.tscn" id="2_bjfk5"]
-[ext_resource type="Script" path="res://NavigationSystem.gd" id="4_2bkc2"]
+[ext_resource type="PackedScene" uid="uid://irms1d6lmat6" path="res://Unit.tscn" id="2_bjfk5"]
+[ext_resource type="Script" path="res://UnitManager.gd" id="4_2bkc2"]
 [ext_resource type="Script" path="res://SelectionManager.gd" id="5_6ui6o"]
 [ext_resource type="Script" path="res://PathRenderer.gd" id="6_vmfsf"]
 
@@ -38,13 +38,17 @@ speed = 2.0
 position = Vector2(458, 387)
 speed = 2.0
 
-[node name="NavigationSystem" type="Node" parent="."]
+[node name="Unit3" parent="." instance=ExtResource("2_bjfk5")]
+position = Vector2(485, 118)
+speed = 2.0
+
+[node name="UnitManager" type="Node" parent="."]
 script = ExtResource("4_2bkc2")
 
-[node name="SelectionManager" type="Node" parent="NavigationSystem"]
+[node name="SelectionManager" type="Node" parent="UnitManager"]
 script = ExtResource("5_6ui6o")
 
-[node name="UnitSelector" type="Node2D" parent="NavigationSystem"]
+[node name="Selector" type="Node2D" parent="UnitManager"]
 script = ExtResource("1")
 color = Color(0.247059, 0.74902, 0.254902, 0.313726)
 
