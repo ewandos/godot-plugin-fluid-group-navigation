@@ -2,6 +2,8 @@ extends Node2D
 class_name NavigationAgent
 
 @onready var area: Area2D = $Area2D
+@export var force_distance_scalar: Curve
+@export var show_debug: bool = false
 @export var agent_attributes: AgentAttributes
 
 signal path_pushed
@@ -10,7 +12,7 @@ var path := []
 var acceleration := Vector2.ZERO
 var velocity := Vector2.ZERO
 var target_reached_distance := 5.0
-var heading := Vector2.ZERO
+var heading := Vector2.RIGHT
 var heading_smoother := HeadingSmoother.new(10)
 
 var steering_force := Vector2.ZERO
@@ -32,15 +34,6 @@ func set_path(new_path: PackedVector2Array) -> void:
 
 func calc_velocity() -> Vector2:
 	if (path.size() == 0):
-		return Vector2.ZERO
-
-	var next_waypoint = path[0]
-	var distance = global_position.distance_to(next_waypoint)
-
-	if (distance <= 10):
-		path.remove_at(0)
-
-	if path.size() == 0:
 		return Vector2.ZERO
 
 	steer()
@@ -67,6 +60,15 @@ func steer() -> void:
 
 
 func compute_path_follow_force() -> Vector2:
+	var next_waypoint = path[0]
+	var distance = global_position.distance_to(next_waypoint)
+
+	if (distance <= 10):
+		path.remove_at(0)
+
+	if path.size() == 0:
+		return Vector2.ZERO
+
 	var steering_force := Vector2.ZERO
 	steering_force = global_position.direction_to(path[0])
 	steering_force *= agent_attributes.max_speed
@@ -87,36 +89,24 @@ func calculate_obstacle_avoidance_steering_force(neighbors: Array[Node2D]) -> Ve
 
 		var direction_to_neighbor := global_position.direction_to(neighbor.global_position)
 
-		# put the neighbor's position into the owner unit's coordinate space
-		var relative_neighbor_position := direction_to_neighbor.rotated(rotation_angle_radians)
-		relative_neighbor_position *= -1
-
+		var is_in_front := counter_clockwise_perp.cross(direction_to_neighbor) > 0
+		var is_right := heading.cross(direction_to_neighbor) > 0
 		# if the neighbor is not in front of this unit
-		if relative_neighbor_position.y <= 0.0: continue
+		if not is_in_front: continue
 
 		var neighbor_collision_radius: float = neighbor.movement.agent_attributes.collision_radius
 
-		var neighbor_x_min := relative_neighbor_position.x - neighbor_collision_radius
-		var neighbor_x_max := relative_neighbor_position.x + neighbor_collision_radius
+		var to_neighbor = neighbor.global_position - global_position
+		var projected_sidestep = to_neighbor.project(heading)
+		var sidestep_direction = (to_neighbor - projected_sidestep) * -1
+		var sidestep_magnitude := (agent_attributes.collision_radius + neighbor_collision_radius) - sidestep_direction.length()
 
-		var x_overlap_magnitude := 0.0
-		var is_left_of_center := relative_neighbor_position.x < 0.0
-		var sidestep_force := counter_clockwise_perp
-
-		if is_left_of_center:
-			sidestep_force *= -1.0
-			x_overlap_magnitude = neighbor_x_max - agent_attributes.collision_radius
-		else:
-			x_overlap_magnitude = agent_attributes.collision_radius - neighbor_x_min
-
-		# if the two agents overlap, calculate the sidestep force
-		if x_overlap_magnitude > 0.0:
-			var distance_scalar := 1.0 - ((direction_to_neighbor.length() - neighbor_collision_radius) / neighbor_collision_radius)
-			var overlap_scalar := 1.0 - (x_overlap_magnitude / agent_attributes.collision_radius)
-			sidestep_force *= distance_scalar * overlap_scalar
-			sidestep_force = sidestep_force.normalized()
-			sidestep_force *= agent_attributes.max_force
-			steering_force += sidestep_force
+		var neighbor_neighbor_radius: float = neighbor.movement.agent_attributes.neighbor_radius
+		var approaching_progress = 1 - (sidestep_direction.length() / neighbor_neighbor_radius)
+		var sidestep_force = sidestep_direction.normalized()
+		sidestep_force *= force_distance_scalar.sample(approaching_progress)
+		sidestep_force *= agent_attributes.max_force
+		steering_force += sidestep_force
 
 		steering_force.limit_length(agent_attributes.max_force)
 
@@ -128,17 +118,14 @@ func compute_separation_force(neighbors: Array[Node2D]) -> Vector2:
 	var number_of_neighbors = 0
 
 	for neighbor in neighbors:
-		if neighbor == self: continue
+		if neighbor.movement == self: continue
 		var distance_to_neighbor := global_position.distance_to(neighbor.global_position)
 
 		if distance_to_neighbor >= agent_attributes.neighbor_radius: continue
 
 		var steering_force := neighbor.global_position.direction_to(global_position)
 
-		# TODO: currently it uses the own agent collision radius
-		# instead it should use the neighbors collision radius
-		# maybe get it over the navigation server
-		var neighbor_radius := agent_attributes.collision_radius
+		var neighbor_radius: float = neighbor.movement.agent_attributes.collision_radius
 
 		if distance_to_neighbor < (agent_attributes.collision_radius + neighbor_radius):
 			steering_force *= agent_attributes.max_force
@@ -248,32 +235,33 @@ func accumulate_steering_forces() -> Vector2:
 	if steering_force.length() > agent_attributes.max_force: return steering_force
 
 	obstacle_avoidance_force = calculate_obstacle_avoidance_steering_force(neighbors)
-	obstacle_avoidance_force *= 0.6
+	obstacle_avoidance_force *= 0.5
 	steering_force += obstacle_avoidance_force
 	if steering_force.length() > agent_attributes.max_force: return steering_force
 
-	return steering_force
-
 	separation_steering_force = compute_separation_force(neighbors)
-	separation_steering_force *= 0.8
+	separation_steering_force *= 0.2
 	steering_force += separation_steering_force
 	if steering_force.length() > agent_attributes.max_force: return steering_force
 
 	alignment_steering_force = compute_alignment_force(neighbors)
 	alignment_steering_force *= 1.0
-	steering_force = accumulate_force(alignment_steering_force, steering_force)
+	steering_force += separation_steering_force
 	if steering_force.length() > agent_attributes.max_force: return steering_force
 
 	cohesion_steering_force = compute_cohesion_force(neighbors)
-	cohesion_steering_force *= 1.0
-	steering_force = accumulate_force(cohesion_steering_force, steering_force)
+	cohesion_steering_force *= 0.3
+	steering_force += cohesion_steering_force
 
 	return steering_force
 
 
 func _draw():
-	draw_circle(Vector2.ZERO, agent_attributes.collision_radius, Color.DIM_GRAY)
+	if not show_debug: return
+	# draw_circle(Vector2.ZERO, agent_attributes.collision_radius, Color.DIM_GRAY)
 	draw_line(Vector2.ZERO, velocity * 20, Color.GREEN, 2)
 	draw_line(Vector2.ZERO, path_follow_force * 100, Color.RED, 2)
 	draw_line(Vector2.ZERO, obstacle_avoidance_force * 100, Color.BLUE, 2)
-	pass
+	draw_line(Vector2.ZERO, separation_steering_force * 100, Color.YELLOW, 2)
+	draw_line(Vector2.ZERO, alignment_steering_force * 100, Color.MAGENTA, 2)
+	draw_line(Vector2.ZERO, cohesion_steering_force * 100, Color.BLACK, 2)
