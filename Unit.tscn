@@ -38,6 +38,7 @@ shape = SubResource("1")
 
 [node name="AgentMovement" type="Node2D" parent="." groups=["agent"]]
 script = ExtResource("3_vhx41")
+navigation_group = 0
 force_distance_scalar = SubResource("Curve_qlrx6")
 show_debug = true
 agent_attributes = SubResource("Resource_svicp")

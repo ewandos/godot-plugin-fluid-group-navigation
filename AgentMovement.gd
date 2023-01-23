@@ -2,6 +2,7 @@ extends Node2D
 class_name NavigationAgent
 
 @onready var area: Area2D = $Area2D
+@export_flags_2d_navigation var navigation_group: int
 @export var force_distance_scalar: Curve
 @export var show_debug: bool = false
 @export var agent_attributes: AgentAttributes
@@ -22,6 +23,9 @@ var separation_steering_force := Vector2.ZERO
 var alignment_steering_force := Vector2.ZERO
 var cohesion_steering_force := Vector2.ZERO
 
+
+func _ready() -> void:
+	heading = heading.rotated(global_rotation)
 
 func set_target(target: Vector2) -> void:
 	path = Pathfinder.calculate_path(global_position, target)
@@ -151,6 +155,7 @@ func compute_alignment_force(neighbors: Array[Node2D]) -> Vector2:
 
 	for neighbor in neighbors:
 		if neighbor == self: continue
+		if neighbor.movement.navigation_group != navigation_group: continue
 		var distance_to_neighbor = global_position.distance_to(neighbor.global_position)
 		if distance_to_neighbor >= agent_attributes.neighbor_radius: continue
 		var neighbor_agent: NavigationAgent = neighbor.get_node("AgentMovement")
@@ -170,6 +175,7 @@ func compute_cohesion_force(neighbors: Array[Node2D]) -> Vector2:
 
 	for neighbor in neighbors:
 		if neighbor == self: continue
+		if neighbor.movement.navigation_group != navigation_group: continue
 		var distance_to_neighbor = global_position.distance_to(neighbor.global_position)
 		if (distance_to_neighbor >= agent_attributes.neighbor_radius): continue
 		centroid += neighbor.global_position
@@ -230,7 +236,7 @@ func accumulate_steering_forces() -> Vector2:
 	var neighbors := area.get_overlapping_bodies()
 
 	path_follow_force = compute_path_follow_force()
-	path_follow_force *= 1.0
+	path_follow_force *= 1.3
 	steering_force += path_follow_force
 	if steering_force.length() > agent_attributes.max_force: return steering_force
 
@@ -259,9 +265,9 @@ func accumulate_steering_forces() -> Vector2:
 func _draw():
 	if not show_debug: return
 	# draw_circle(Vector2.ZERO, agent_attributes.collision_radius, Color.DIM_GRAY)
-	draw_line(Vector2.ZERO, velocity * 20, Color.GREEN, 2)
-	draw_line(Vector2.ZERO, path_follow_force * 100, Color.RED, 2)
-	draw_line(Vector2.ZERO, obstacle_avoidance_force * 100, Color.BLUE, 2)
-	draw_line(Vector2.ZERO, separation_steering_force * 100, Color.YELLOW, 2)
-	draw_line(Vector2.ZERO, alignment_steering_force * 100, Color.MAGENTA, 2)
-	draw_line(Vector2.ZERO, cohesion_steering_force * 100, Color.BLACK, 2)
+	draw_line(Vector2.ZERO, velocity.rotated(-global_rotation) * 20, Color.GREEN, 2)
+	draw_line(Vector2.ZERO, path_follow_force.rotated(-global_rotation) * 100, Color.RED, 2)
+	draw_line(Vector2.ZERO, obstacle_avoidance_force.rotated(-global_rotation) * 100, Color.BLUE, 2)
+	draw_line(Vector2.ZERO, separation_steering_force.rotated(-global_rotation) * 100, Color.YELLOW, 2)
+	draw_line(Vector2.ZERO, alignment_steering_force.rotated(-global_rotation) * 100, Color.MAGENTA, 2)
+	draw_line(Vector2.ZERO, cohesion_steering_force.rotated(-global_rotation) * 100, Color.BLACK, 2)

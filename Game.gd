@@ -1,16 +1,10 @@
 extends Node2D
 
-var units: Array
-var markers: Array
-
+var unit_navigation_tests: Array
 
 func _ready() -> void:
-	units = find_children("*", "Unit")
-	markers = find_children("*", "Marker2D")
+	unit_navigation_tests = find_children("*", "UnitNavigationTest")
 
 func _on_button_pressed() -> void:
-	var i := 0
-	for unit in units:
-		unit.movement.set_target(markers[i].global_position)
-		i += 1
-
+	for unit_navigation_test in unit_navigation_tests:
+		unit_navigation_test.start_test()
