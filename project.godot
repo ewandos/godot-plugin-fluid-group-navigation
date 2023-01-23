@@ -8,40 +8,6 @@
 
 config_version=5
 
-_global_script_classes=[{
-"base": "Node2D",
-"class": &"AgentMovement",
-"language": &"GDScript",
-"path": "res://AgentMovement.gd"
-}, {
-"base": "Node",
-"class": &"NavigationSystem",
-"language": &"GDScript",
-"path": "res://NavigationSystem.gd"
-}, {
-"base": "Node2D",
-"class": &"PathStack",
-"language": &"GDScript",
-"path": "res://PathStack.gd"
-}, {
-"base": "Node",
-"class": &"SelectionManager",
-"language": &"GDScript",
-"path": "res://SelectionManager.gd"
-}, {
-"base": "CharacterBody2D",
-"class": &"Unit",
-"language": &"GDScript",
-"path": "res://Unit.gd"
-}]
-_global_script_class_icons={
-"AgentMovement": "",
-"NavigationSystem": "",
-"PathStack": "",
-"SelectionManager": "",
-"Unit": ""
-}
-
 [application]
 
 config/name="Master-Thesis"
@@ -51,7 +17,18 @@ config/icon="res://icon.png"
 
 [autoload]
 
-Pathfinder2d="*res://Pathfinder.gd"
+Pathfinder="*res://Pathfinder.gd"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1920
+window/stretch/mode="canvas_items"
+
+[editor]
+
+movie_writer/movie_file="/Users/pewert/Desktop/recording.avi"
+export/convert_text_resources_to_binary=true
 
 [gui]
 

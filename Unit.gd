@@ -6,16 +6,17 @@ class_name Unit
 var is_selected := false
 
 @onready var sprite: Sprite2D = $Sprite2D
-@onready var movement := $AgentMovement
+@onready var movement: NavigationAgent = $AgentMovement
 
 func _physics_process(_delta):
-	var velocity = movement.calc_velocity(global_position)
+	var velocity = movement.calc_velocity()
+	sprite.look_at(global_position + movement.heading)
 	move_and_collide(velocity)
 
 func select() -> void:
 	sprite.modulate = color
 	is_selected = true
-	
+
 func deselect() -> void:
 	sprite.modulate = Color.WHITE
 	is_selected = false
