@@ -26,7 +26,7 @@ func _input(event):
 		if event.pressed:
 			dragging = true
 			drag_start = event.position
-			
+
 		# mouse button event fires on press and release
 		elif dragging:
 			dragging = false
@@ -39,11 +39,11 @@ func _input(event):
 			query.transform = Transform2D(0, (drag_end + drag_start) / 2)
 			query.collide_with_areas = false
 			var results = space.intersect_shape(query)
-			
+
 			for result in results:
 				selected_units.append(result.collider)
 				result.collider.select()
-				
+
 			selection_finished.emit(selected_units)
 			_reset()
 

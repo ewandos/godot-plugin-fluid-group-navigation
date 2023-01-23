@@ -1,3 +1,5 @@
+# THIS WON'T BE PART OF THE PLUGIN
+
 extends Node
 class_name UnitManager
 
