@@ -62,7 +62,6 @@ func steer() -> void:
 	# smooth the heading
 	heading = heading_smoother.update(velocity.normalized())
 
-
 func compute_path_follow_force() -> Vector2:
 	var next_waypoint = path[0]
 	var distance = global_position.distance_to(next_waypoint)
@@ -95,7 +94,7 @@ func calculate_obstacle_avoidance_steering_force(neighbors: Array[Node2D]) -> Ve
 
 		var is_in_front := counter_clockwise_perp.cross(direction_to_neighbor) > 0
 		var is_right := heading.cross(direction_to_neighbor) > 0
-		# if the neighbor is not in front of this unit
+
 		if not is_in_front: continue
 
 		var neighbor_collision_radius: float = neighbor.movement.agent_attributes.collision_radius
@@ -106,13 +105,13 @@ func calculate_obstacle_avoidance_steering_force(neighbors: Array[Node2D]) -> Ve
 		var sidestep_magnitude := (agent_attributes.collision_radius + neighbor_collision_radius) - sidestep_direction.length()
 
 		var neighbor_neighbor_radius: float = neighbor.movement.agent_attributes.neighbor_radius
-		var approaching_progress = 1 - (sidestep_direction.length() / neighbor_neighbor_radius)
+		var approaching_progress = 1- (global_position.distance_to(neighbor.global_position) / neighbor_neighbor_radius)
 		var sidestep_force = sidestep_direction.normalized()
-		sidestep_force *= force_distance_scalar.sample(approaching_progress)
 		sidestep_force *= agent_attributes.max_force
 		steering_force += sidestep_force
-
 		steering_force.limit_length(agent_attributes.max_force)
+		var distance_scalar = force_distance_scalar.sample(approaching_progress)
+		steering_force *= distance_scalar
 
 	return steering_force
 
@@ -154,8 +153,9 @@ func compute_alignment_force(neighbors: Array[Node2D]) -> Vector2:
 	var number_of_neighbors := 0
 
 	for neighbor in neighbors:
-		if neighbor == self: continue
-		if neighbor.movement.navigation_group != navigation_group: continue
+		if neighbor.movement == self: continue
+		var is_in_same_navigation_group: bool = neighbor.movement.navigation_group & navigation_group != 0
+		if not is_in_same_navigation_group: continue
 		var distance_to_neighbor = global_position.distance_to(neighbor.global_position)
 		if distance_to_neighbor >= agent_attributes.neighbor_radius: continue
 		var neighbor_agent: NavigationAgent = neighbor.get_node("AgentMovement")
@@ -174,8 +174,9 @@ func compute_cohesion_force(neighbors: Array[Node2D]) -> Vector2:
 	var number_of_neighbors := 0
 
 	for neighbor in neighbors:
-		if neighbor == self: continue
-		if neighbor.movement.navigation_group != navigation_group: continue
+		if neighbor.movement == self: continue
+		var is_in_same_navigation_group: bool = neighbor.movement.navigation_group & navigation_group != 0
+		if not is_in_same_navigation_group: continue
 		var distance_to_neighbor = global_position.distance_to(neighbor.global_position)
 		if (distance_to_neighbor >= agent_attributes.neighbor_radius): continue
 		centroid += neighbor.global_position

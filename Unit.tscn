@@ -9,7 +9,7 @@
 radius = 30.0
 
 [sub_resource type="Curve" id="Curve_qlrx6"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0.132845), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="Resource" id="Resource_svicp"]
@@ -18,7 +18,7 @@ mass = 1.0
 collision_radius = 30.0
 max_force = 0.5
 max_speed = 1.5
-neighbor_radius = 100.0
+neighbor_radius = 150.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_o4sxb"]
 radius = 100.0
@@ -37,8 +37,9 @@ texture = ExtResource("2_wydow")
 shape = SubResource("1")
 
 [node name="AgentMovement" type="Node2D" parent="." groups=["agent"]]
+position = Vector2(1, -2.08165e-12)
 script = ExtResource("3_vhx41")
-navigation_group = 0
+navigation_group = 1
 force_distance_scalar = SubResource("Curve_qlrx6")
 show_debug = true
 agent_attributes = SubResource("Resource_svicp")
