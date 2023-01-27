@@ -7,7 +7,7 @@ class_name UnitNavigationTest
 @onready var timer: Timer = $Timer
 
 func start_test() -> void:
-	unit.movement.set_target(target_position.global_position)
+	unit.movement.set_destination(target_position.global_position)
 	timer.start()
 
 func _on_timer_timeout() -> void:

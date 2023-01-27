@@ -15,10 +15,6 @@ run/main_scene="res://Game.tscn"
 config/features=PackedStringArray("4.0")
 config/icon="res://icon.png"
 
-[autoload]
-
-Pathfinder="*res://Pathfinder.gd"
-
 [display]
 
 window/size/viewport_width=1920

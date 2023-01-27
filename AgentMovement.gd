@@ -3,9 +3,9 @@ class_name NavigationAgent
 
 @onready var area: Area2D = $Area2D
 @export_flags_2d_navigation var navigation_group: int
-@export var force_distance_scalar: Curve
 @export var show_debug: bool = false
 @export var agent_attributes: AgentAttributes
+@export var path_stopping_distance := 10
 
 signal path_pushed
 var path := []
@@ -17,18 +17,31 @@ var heading := Vector2.RIGHT
 var heading_smoother := HeadingSmoother.new(10)
 
 var steering_force := Vector2.ZERO
+
+@export_group("Weights")
+@export var path_follow_weight := 1.3
 var path_follow_force := Vector2.ZERO
+
+@export var obstacle_avoidance_weight := 0.5
+@export var obstacle_avoidance_distance_scalar: Curve
 var obstacle_avoidance_force := Vector2.ZERO
+
+@export var separation_weight := 0.2
 var separation_steering_force := Vector2.ZERO
+
+@export var alignment_weight := 1.0
 var alignment_steering_force := Vector2.ZERO
+
+@export var cohesion_weight := 0.3
 var cohesion_steering_force := Vector2.ZERO
 
 
 func _ready() -> void:
 	heading = heading.rotated(global_rotation)
 
-func set_target(target: Vector2) -> void:
-	path = Pathfinder.calculate_path(global_position, target)
+
+func set_destination(target: Vector2) -> void:
+	path = calculate_path(global_position, target)
 
 
 func set_path(new_path: PackedVector2Array) -> void:
@@ -66,7 +79,7 @@ func compute_path_follow_force() -> Vector2:
 	var next_waypoint = path[0]
 	var distance = global_position.distance_to(next_waypoint)
 
-	if (distance <= 10):
+	if (distance <= path_stopping_distance):
 		path.remove_at(0)
 
 	if path.size() == 0:
@@ -110,7 +123,7 @@ func calculate_obstacle_avoidance_steering_force(neighbors: Array[Node2D]) -> Ve
 		sidestep_force *= agent_attributes.max_force
 		steering_force += sidestep_force
 		steering_force.limit_length(agent_attributes.max_force)
-		var distance_scalar = force_distance_scalar.sample(approaching_progress)
+		var distance_scalar = obstacle_avoidance_distance_scalar.sample(approaching_progress)
 		steering_force *= distance_scalar
 
 	return steering_force
@@ -218,50 +231,47 @@ func compute_seek_force(in_target: Vector2, in_b_slowdown: bool) -> Vector2:
 	return compute_force_to_steer_to_velocity(desired)
 
 
-func accumulate_force(in_force_to_add: Vector2, in_total_forces: Vector2):
-	var magnitude_to_add := in_force_to_add.length()
-	var magnitude_remaining := agent_attributes.max_force - in_total_forces.length()
-	var is_force_left := magnitude_to_add < agent_attributes.max_force
-
-	if is_force_left:
-		in_force_to_add /= magnitude_to_add
-		in_force_to_add *= magnitude_remaining
-
-	in_total_forces += in_force_to_add
-
-	return in_total_forces
-
-
 func accumulate_steering_forces() -> Vector2:
 	steering_force = Vector2.ZERO
 	var neighbors := area.get_overlapping_bodies()
 
 	path_follow_force = compute_path_follow_force()
-	path_follow_force *= 1.3
+	path_follow_force *= path_follow_weight
 	steering_force += path_follow_force
 	if steering_force.length() > agent_attributes.max_force: return steering_force
 
 	obstacle_avoidance_force = calculate_obstacle_avoidance_steering_force(neighbors)
-	obstacle_avoidance_force *= 0.5
+	obstacle_avoidance_force *= obstacle_avoidance_weight
 	steering_force += obstacle_avoidance_force
 	if steering_force.length() > agent_attributes.max_force: return steering_force
 
 	separation_steering_force = compute_separation_force(neighbors)
-	separation_steering_force *= 0.2
+	separation_steering_force *= separation_weight
 	steering_force += separation_steering_force
 	if steering_force.length() > agent_attributes.max_force: return steering_force
 
 	alignment_steering_force = compute_alignment_force(neighbors)
-	alignment_steering_force *= 1.0
+	alignment_steering_force *= alignment_weight
 	steering_force += separation_steering_force
 	if steering_force.length() > agent_attributes.max_force: return steering_force
 
 	cohesion_steering_force = compute_cohesion_force(neighbors)
-	cohesion_steering_force *= 0.3
+	cohesion_steering_force *= cohesion_weight
 	steering_force += cohesion_steering_force
 
 	return steering_force
 
+func calculate_path(start_position: Vector2, target_position: Vector2) -> PackedVector2Array:
+	var parameter := NavigationPathQueryParameters2D.new()
+	parameter.path_postprocessing = NavigationPathQueryParameters2D.PATH_POSTPROCESSING_CORRIDORFUNNEL
+	parameter.start_position = start_position
+	parameter.target_position = target_position
+	parameter.map = NavigationServer2D.get_maps()[0]
+	var query_result := NavigationPathQueryResult2D.new()
+	NavigationServer2D.query_path(parameter, query_result)
+	var result := query_result.get_path()
+	result.remove_at(0)
+	return result
 
 func _draw():
 	if not show_debug: return
