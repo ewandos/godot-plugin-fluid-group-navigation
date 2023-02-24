@@ -9,9 +9,9 @@ var is_selected := false
 @onready var movement: NavigationAgent = $AgentMovement
 
 func _physics_process(_delta):
-	var velocity = movement.calc_velocity()
+	var calculated_velocity = movement.calc_velocity()
 	sprite.look_at(global_position + movement.heading)
-	move_and_collide(velocity)
+	move_and_collide(calculated_velocity)
 
 func select() -> void:
 	sprite.modulate = color

@@ -24,7 +24,6 @@ window/stretch/mode="canvas_items"
 [editor]
 
 movie_writer/movie_file="/Users/pewert/Desktop/recording.avi"
-export/convert_text_resources_to_binary=true
 
 [gui]
 

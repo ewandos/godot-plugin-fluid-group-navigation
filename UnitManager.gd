@@ -16,7 +16,7 @@ func _input(event):
 		for obj in selection_manager.selection:
 			var offset = obj.global_position - selection_centroid
 			var target_position = get_viewport().get_mouse_position() + offset
-			obj.movement.set_target(target_position)
+			obj.movement.set_destination(target_position)
 
 func set_selection(selection):
 	selection_manager.selection = selection
