@@ -1,7 +1,7 @@
 extends Node
 class_name HeadingSmoother
 
-var sample_size = 10
+var sample_size = 15
 var sample_history : Array[Vector2] = []
 var next_empty_slot := 0
 

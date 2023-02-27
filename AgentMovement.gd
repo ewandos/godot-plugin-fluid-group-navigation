@@ -15,6 +15,7 @@ var velocity := Vector2.ZERO
 var target_reached_distance := 5.0
 var heading := Vector2.RIGHT
 var heading_smoother := HeadingSmoother.new(10)
+var is_sleeping := true
 
 var cummulative_steering_force := Vector2.ZERO
 
@@ -50,7 +51,7 @@ func set_path(new_path: PackedVector2Array) -> void:
 
 
 func calc_velocity() -> Vector2:
-	if (path.size() == 0):
+	if path.size() == 0:
 		return Vector2.ZERO
 
 	steer()
@@ -72,6 +73,8 @@ func steer() -> void:
 	# reset acceleration to 0 each cycle
 	acceleration *= 0
 
+	velocity = apply_turning_radius(velocity)
+
 	# smooth the heading
 	heading = heading_smoother.update(velocity.normalized())
 
@@ -88,18 +91,6 @@ func compute_path_follow_force() -> Vector2:
 	var steering_force: Vector2 = Vector2.ZERO
 	steering_force = global_position.direction_to(path[0])
 	steering_force *= agent_attributes.max_speed
-
-	var steering_angle = abs(steering_force.angle_to(velocity))
-	var max_angle_rad = deg_to_rad(agent_attributes.turning_radius)
-
-	if steering_angle > max_angle_rad:
-		var is_right := velocity.cross(steering_force) > 0
-		var angle_correction = steering_angle - max_angle_rad
-
-		if is_right:
-			angle_correction *= -1
-
-		steering_force = steering_force.rotated(angle_correction)
 
 	return compute_force_to_steer_to_velocity(steering_force)
 
@@ -244,28 +235,33 @@ func accumulate_steering_forces() -> Vector2:
 	path_follow_force = compute_path_follow_force()
 	path_follow_force *= path_follow_weight
 	cummulative_steering_force += path_follow_force
-	if cummulative_steering_force.length() > agent_attributes.max_force: return cummulative_steering_force
+	if cummulative_steering_force.length() > agent_attributes.max_force:
+		return cummulative_steering_force
 
 	obstacle_avoidance_force = calculate_obstacle_avoidance_steering_force(neighbors)
 	obstacle_avoidance_force *= obstacle_avoidance_weight
 	cummulative_steering_force += obstacle_avoidance_force
-	if cummulative_steering_force.length() > agent_attributes.max_force: return cummulative_steering_force
+	if cummulative_steering_force.length() > agent_attributes.max_force:
+		return cummulative_steering_force
 
 	separation_steering_force = compute_separation_force(neighbors)
 	separation_steering_force *= separation_weight
 	cummulative_steering_force += separation_steering_force
-	if cummulative_steering_force.length() > agent_attributes.max_force: return cummulative_steering_force
+	if cummulative_steering_force.length() > agent_attributes.max_force:
+		return cummulative_steering_force
 
 	alignment_steering_force = compute_alignment_force(neighbors)
 	alignment_steering_force *= alignment_weight
 	cummulative_steering_force += separation_steering_force
-	if cummulative_steering_force.length() > agent_attributes.max_force: return cummulative_steering_force
+	if cummulative_steering_force.length() > agent_attributes.max_force:
+		return cummulative_steering_force
 
 	cohesion_steering_force = compute_cohesion_force(neighbors)
 	cohesion_steering_force *= cohesion_weight
 	cummulative_steering_force += cohesion_steering_force
 
 	return cummulative_steering_force
+
 
 func calculate_path(start_position: Vector2, target_position: Vector2) -> PackedVector2Array:
 	var parameter := NavigationPathQueryParameters2D.new()
@@ -279,9 +275,25 @@ func calculate_path(start_position: Vector2, target_position: Vector2) -> Packed
 	result.remove_at(0)
 	return result
 
+
+func apply_turning_radius(steering_force: Vector2) -> Vector2:
+	var force_angle = abs(steering_force.angle_to(heading))
+	var angle_in_degree = rad_to_deg(force_angle)
+	var max_angle_rad = deg_to_rad(agent_attributes.turning_radius)
+
+	if force_angle > max_angle_rad:
+		var is_right := heading.cross(cummulative_steering_force) > 0
+		var angle_correction = force_angle - max_angle_rad
+
+		if is_right:
+			angle_correction *= -1
+
+		return steering_force.rotated(angle_correction)
+	return steering_force
+
+
 func _draw():
 	if not show_debug: return
-	# draw_circle(Vector2.ZERO, agent_attributes.collision_radius, Color.DIM_GRAY)
 	draw_line(Vector2.ZERO, velocity.rotated(-global_rotation) * 20, Color.GREEN, 2)
 	draw_line(Vector2.ZERO, path_follow_force.rotated(-global_rotation) * 100, Color.RED, 2)
 	draw_line(Vector2.ZERO, obstacle_avoidance_force.rotated(-global_rotation) * 100, Color.BLUE, 2)
