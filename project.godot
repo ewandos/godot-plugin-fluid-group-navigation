@@ -13,7 +13,7 @@ config_version=5
 config/name="Master-Thesis"
 run/main_scene="res://Game.tscn"
 config/features=PackedStringArray("4.0")
-config/icon="res://icon.png"
+config/icon="res://addons/fluid_navigation_system/icon.png"
 
 [display]
 
@@ -24,6 +24,10 @@ window/stretch/mode="canvas_items"
 [editor]
 
 movie_writer/movie_file="/Users/pewert/Desktop/recording.avi"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/fluid_navigation_system/plugin.cfg")
 
 [gui]
 

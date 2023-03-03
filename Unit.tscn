@@ -1,15 +1,15 @@
-[gd_scene load_steps=9 format=3 uid="uid://irms1d6lmat6"]
+[gd_scene load_steps=9 format=3 uid="uid://cvaxpbqefx2vv"]
 
 [ext_resource type="Script" path="res://Unit.gd" id="1_kksq3"]
 [ext_resource type="Texture2D" uid="uid://cw2ut2e27tboj" path="res://unit.png" id="2_wydow"]
-[ext_resource type="Script" path="res://AgentMovement.gd" id="3_vhx41"]
-[ext_resource type="Script" path="res://AgentAttributes.gd" id="4_p5icd"]
+[ext_resource type="Script" path="res://addons/fluid_navigation_system/AgentMovement.gd" id="3_7tliv"]
+[ext_resource type="Script" path="res://addons/fluid_navigation_system/AgentAttributes.gd" id="4_flqdd"]
 
 [sub_resource type="CircleShape2D" id="1"]
 radius = 30.0
 
 [sub_resource type="Resource" id="Resource_e12x8"]
-script = ExtResource("4_p5icd")
+script = ExtResource("4_flqdd")
 mass = 1.0
 collision_radius = 30.0
 turning_radius = 90
@@ -39,7 +39,7 @@ texture = ExtResource("2_wydow")
 shape = SubResource("1")
 
 [node name="AgentMovement" type="Node2D" parent="." groups=["agent"]]
-script = ExtResource("3_vhx41")
+script = ExtResource("3_7tliv")
 navigation_group = 1
 show_debug = true
 agent_attributes = SubResource("Resource_e12x8")
