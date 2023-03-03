@@ -9,6 +9,7 @@ class_name NavigationAgent
 
 signal path_pushed
 var path := []
+var path_offset := Vector2.ZERO
 
 var acceleration := Vector2.ZERO
 var velocity := Vector2.ZERO
@@ -20,6 +21,7 @@ var is_sleeping := true
 var cummulative_steering_force := Vector2.ZERO
 
 @export_group("Weights")
+
 @export var path_follow_weight := 1.3
 var path_follow_force := Vector2.ZERO
 
@@ -41,8 +43,10 @@ func _ready() -> void:
 	heading = heading.rotated(global_rotation)
 
 
-func set_destination(target: Vector2) -> void:
+func set_destination(target: Vector2, with_offset: Vector2 = Vector2.ZERO) -> void:
 	path = calculate_path(global_position, target)
+	path_offset = with_offset
+	path_pushed.emit(get_instance_id(), path)
 
 
 func set_path(new_path: PackedVector2Array) -> void:
@@ -79,8 +83,7 @@ func steer() -> void:
 	heading = heading_smoother.update(velocity.normalized())
 
 func compute_path_follow_force() -> Vector2:
-	var next_waypoint = path[0]
-	var distance = global_position.distance_to(next_waypoint)
+	var distance = global_position.distance_to(path[0])
 
 	if (distance <= path_stopping_distance):
 		path.remove_at(0)
@@ -95,7 +98,7 @@ func compute_path_follow_force() -> Vector2:
 	return compute_force_to_steer_to_velocity(steering_force)
 
 
-func calculate_obstacle_avoidance_steering_force(neighbors: Array[Node2D]) -> Vector2:
+func compute_obstacle_avoidance_force(neighbors: Array[Node2D]) -> Vector2:
 	var steering_force := Vector2.ZERO
 	var counter_clockwise_perp = heading.orthogonal().normalized()
 
@@ -120,8 +123,15 @@ func calculate_obstacle_avoidance_steering_force(neighbors: Array[Node2D]) -> Ve
 		var sidestep_force = sidestep_direction.normalized()
 		sidestep_force *= agent_attributes.max_force
 		steering_force += sidestep_force
+
+		var priority_scalar: float = neighbor.movement.agent_attributes.priority / agent_attributes.priority
+		priority_scalar = floorf(priority_scalar)
+		steering_force *= priority_scalar
 		steering_force.limit_length(agent_attributes.max_force)
 		var distance_scalar = obstacle_avoidance_distance_scalar.sample(approaching_progress)
+
+
+
 		steering_force *= distance_scalar
 
 	return steering_force
@@ -149,11 +159,17 @@ func compute_separation_force(neighbors: Array[Node2D]) -> Vector2:
 			distance = clamp(distance, 0.0, 1.0)
 			neighbor_force *= agent_attributes.max_force * distance
 
+		var priority_scalar: float = neighbor.movement.agent_attributes.priority / agent_attributes.priority
+		priority_scalar = floorf(priority_scalar)
+		neighbor_force *= priority_scalar
+
 		steering_force += neighbor_force
 		number_of_neighbors += 1
 
 	if number_of_neighbors > 0:
 		steering_force /= number_of_neighbors
+
+
 
 	return steering_force
 
@@ -238,7 +254,7 @@ func accumulate_steering_forces() -> Vector2:
 	if cummulative_steering_force.length() > agent_attributes.max_force:
 		return cummulative_steering_force
 
-	obstacle_avoidance_force = calculate_obstacle_avoidance_steering_force(neighbors)
+	obstacle_avoidance_force = compute_obstacle_avoidance_force(neighbors)
 	obstacle_avoidance_force *= obstacle_avoidance_weight
 	cummulative_steering_force += obstacle_avoidance_force
 	if cummulative_steering_force.length() > agent_attributes.max_force:

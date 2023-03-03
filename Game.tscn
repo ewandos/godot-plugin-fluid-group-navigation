@@ -8,9 +8,9 @@
 [ext_resource type="Script" path="res://PathRenderer.gd" id="6_vmfsf"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_g5mik"]
-vertices = PackedVector2Array(-56, -56, 2112, -56, 2104, 2080, -224, 2024, -160, 16)
+vertices = PackedVector2Array(-42, -76, 2114, -56, 2221, 1931, -202, 1933, -160, 16)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-56, -56, 2112, -56, 2104, 2080, -224, 2024, -160, 16)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-42, -76, 2114, -56, 2221, 1931, -202, 1933, -160, 16)])
 
 [node name="Simulation" type="Node2D"]
 script = ExtResource("1_r2ja2")
@@ -18,196 +18,15 @@ script = ExtResource("1_r2ja2")
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 visible = false
 navigation_polygon = SubResource("NavigationPolygon_g5mik")
-metadata/_edit_lock_ = true
 
-[node name="Testbed" type="Node2D" parent="."]
+[node name="Testbed5" type="Node2D" parent="."]
 position = Vector2(0, 80)
 
-[node name="UnitNavigationTest" parent="Testbed" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 883)
+[node name="UnitNavigationTest" parent="Testbed5" instance=ExtResource("3_5e3ob")]
+position = Vector2(1073, 1004)
 
-[node name="UnitNavigationTest2" parent="Testbed" instance=ExtResource("3_5e3ob")]
-position = Vector2(1079, 960)
-
-[node name="UnitNavigationTest3" parent="Testbed" instance=ExtResource("3_5e3ob")]
-position = Vector2(975, 995)
-
-[node name="UnitNavigationTest4" parent="Testbed" instance=ExtResource("3_5e3ob")]
-position = Vector2(1052, 1061)
-
-[node name="UnitNavigationTest5" parent="Testbed" instance=ExtResource("3_5e3ob")]
-position = Vector2(947, 1096)
-
-[node name="UnitNavigationTest6" parent="Testbed" instance=ExtResource("3_5e3ob")]
-position = Vector2(966, 848)
-rotation = -3.14159
-
-[node name="UnitNavigationTest7" parent="Testbed" instance=ExtResource("3_5e3ob")]
-position = Vector2(1037, 925)
-rotation = -3.14159
-
-[node name="UnitNavigationTest8" parent="Testbed" instance=ExtResource("3_5e3ob")]
-position = Vector2(933, 960)
-rotation = -3.14159
-
-[node name="UnitNavigationTest9" parent="Testbed" instance=ExtResource("3_5e3ob")]
-position = Vector2(1010, 1026)
-rotation = -3.14159
-
-[node name="UnitNavigationTest10" parent="Testbed" instance=ExtResource("3_5e3ob")]
-position = Vector2(905, 1061)
-rotation = -3.14159
-
-[node name="Testbed2" type="Node2D" parent="."]
-process_mode = 4
-visible = false
-position = Vector2(0, 80)
-
-[node name="UnitNavigationTest" parent="Testbed2" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 883)
-
-[node name="UnitNavigationTest2" parent="Testbed2" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 883)
-rotation = 0.261799
-
-[node name="UnitNavigationTest3" parent="Testbed2" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 883)
-rotation = 0.523598
-
-[node name="UnitNavigationTest4" parent="Testbed2" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 883)
-rotation = 0.785397
-
-[node name="UnitNavigationTest5" parent="Testbed2" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 883)
-rotation = 1.0472
-
-[node name="UnitNavigationTest6" parent="Testbed2" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 883)
-rotation = 1.309
-
-[node name="UnitNavigationTest7" parent="Testbed2" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 883)
-rotation = 1.57079
-
-[node name="UnitNavigationTest8" parent="Testbed2" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 883)
-rotation = 1.83259
-
-[node name="UnitNavigationTest9" parent="Testbed2" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 883)
-rotation = 2.09439
-
-[node name="UnitNavigationTest10" parent="Testbed2" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 883)
-rotation = 2.35619
-
-[node name="UnitNavigationTest11" parent="Testbed2" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 883)
-rotation = 2.61799
-
-[node name="UnitNavigationTest12" parent="Testbed2" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 883)
-rotation = 2.87979
-
-[node name="UnitNavigationTest13" parent="Testbed2" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 883)
-rotation = 3.14159
-
-[node name="UnitNavigationTest14" parent="Testbed2" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 883)
-rotation = 3.40339
-
-[node name="UnitNavigationTest15" parent="Testbed2" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 883)
-rotation = 3.92699
-
-[node name="UnitNavigationTest16" parent="Testbed2" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 883)
-rotation = 3.66519
-
-[node name="UnitNavigationTest17" parent="Testbed2" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 883)
-rotation = 4.18878
-
-[node name="UnitNavigationTest18" parent="Testbed2" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 883)
-rotation = 4.45058
-
-[node name="UnitNavigationTest19" parent="Testbed2" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 883)
-rotation = 4.71238
-
-[node name="UnitNavigationTest20" parent="Testbed2" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 883)
-rotation = 4.97418
-
-[node name="UnitNavigationTest21" parent="Testbed2" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 883)
-rotation = 5.23598
-
-[node name="UnitNavigationTest22" parent="Testbed2" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 883)
-rotation = 5.49778
-
-[node name="UnitNavigationTest23" parent="Testbed2" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 883)
-rotation = 5.75958
-
-[node name="UnitNavigationTest24" parent="Testbed2" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 883)
-rotation = 6.02138
-
-[node name="Testbed3" type="Node2D" parent="."]
-process_mode = 4
-visible = false
-position = Vector2(0, 80)
-
-[node name="UnitNavigationTest" parent="Testbed3" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 1056)
-
-[node name="UnitNavigationTest2" parent="Testbed3" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 995)
-
-[node name="UnitNavigationTest3" parent="Testbed3" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 925)
-
-[node name="UnitNavigationTest4" parent="Testbed3" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 855)
-
-[node name="UnitNavigationTest5" parent="Testbed3" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 783)
-
-[node name="UnitNavigationTest6" parent="Testbed3" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 1056)
-rotation = -3.14159
-
-[node name="UnitNavigationTest7" parent="Testbed3" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 995)
-rotation = -3.14159
-
-[node name="UnitNavigationTest8" parent="Testbed3" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 925)
-rotation = -3.14159
-
-[node name="UnitNavigationTest9" parent="Testbed3" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 855)
-rotation = -3.14159
-
-[node name="UnitNavigationTest10" parent="Testbed3" instance=ExtResource("3_5e3ob")]
-position = Vector2(1008, 783)
-rotation = -3.14159
-
-[node name="Testbed4" type="Node2D" parent="."]
-process_mode = 4
-visible = false
-position = Vector2(0, 80)
-
-[node name="UnitNavigationTest" parent="Testbed4" instance=ExtResource("3_5e3ob")]
-position = Vector2(1340, 1061)
-
-[node name="UnitNavigationTest2" parent="Testbed4" instance=ExtResource("3_5e3ob")]
-position = Vector2(531, 1061)
+[node name="UnitNavigationTest2" parent="Testbed5" instance=ExtResource("3_5e3ob")]
+position = Vector2(991, 990)
 rotation = 3.14159
 
 [node name="UnitManager" type="Node" parent="."]
