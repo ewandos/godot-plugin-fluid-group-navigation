@@ -1,6 +1,6 @@
 @tool
 extends Node2D
-class_name NavigationAgent
+class_name FluidAgentNavigation
 
 @onready var area: Area2D = $Area2D
 @export_flags_2d_navigation var navigation_group: int
@@ -185,7 +185,7 @@ func compute_alignment_force(neighbors: Array[Node2D]) -> Vector2:
 		if not is_in_same_navigation_group: continue
 		var distance_to_neighbor = global_position.distance_to(neighbor.global_position)
 		if distance_to_neighbor >= agent_attributes.neighbor_radius: continue
-		var neighbor_agent: NavigationAgent = neighbor.get_node("AgentMovement")
+		var neighbor_agent: FluidAgentNavigation = neighbor.get_node("AgentMovement")
 		steering_force += neighbor_agent.heading
 		number_of_neighbors += 1
 

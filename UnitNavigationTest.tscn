@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://om0elit3bi7v"]
 
 [ext_resource type="Script" path="res://UnitNavigationTest.gd" id="1_mjg25"]
-[ext_resource type="PackedScene" uid="uid://irms1d6lmat6" path="res://Unit.tscn" id="2_4qge6"]
+[ext_resource type="PackedScene" uid="uid://cwws0waptslm7" path="res://Unit.tscn" id="2_4qge6"]
 
 [node name="UnitNavigationTest" type="Node2D"]
 position = Vector2(2.08165e-12, 2.08165e-12)
@@ -16,6 +16,7 @@ position = Vector2(800, 2.08165e-12)
 gizmo_extents = 45.0
 
 [node name="Breadcrumps" type="Line2D" parent="."]
+visible = false
 width = 3.0
 
 [node name="Timer" type="Timer" parent="."]

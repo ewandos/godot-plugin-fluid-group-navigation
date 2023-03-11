@@ -6,7 +6,7 @@ class_name Unit
 var is_selected := false
 
 @onready var sprite: Sprite2D = $Sprite2D
-@onready var movement: NavigationAgent = $AgentMovement
+@onready var movement: FluidAgentNavigation = $AgentMovement
 
 func _physics_process(_delta):
 	velocity = movement.calc_velocity() * 100

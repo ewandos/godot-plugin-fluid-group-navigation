@@ -13,7 +13,6 @@ config_version=5
 config/name="Master-Thesis"
 run/main_scene="res://Game.tscn"
 config/features=PackedStringArray("4.0")
-config/icon="res://addons/fluid_navigation_system/icon.png"
 
 [display]
 
