@@ -19,4 +19,5 @@ class_name AgentAttributes
 ## Radius in pixel that other agents are detected.
 @export var neighbor_radius := 100.0
 
+
 @export var priority := 1

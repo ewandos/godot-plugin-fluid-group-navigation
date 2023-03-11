@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c2gqvmkefj0xv"
-path="res://.godot/imported/agent_icon.png-1e5e05b41be11a4a9cb40603f9d84f95.ctex"
+path="res://.godot/imported/agent_icon.png-4170f0acb1cba7adececd320bc007393.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/fluid_navigation_system/agent_icon.png"
-dest_files=["res://.godot/imported/agent_icon.png-1e5e05b41be11a4a9cb40603f9d84f95.ctex"]
+source_file="res://addons/fluid_navigation_system/icons/agent_icon.png"
+dest_files=["res://.godot/imported/agent_icon.png-4170f0acb1cba7adececd320bc007393.ctex"]
 
 [params]
 
