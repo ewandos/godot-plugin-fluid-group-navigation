@@ -26,13 +26,36 @@ position = Vector2(0, 80)
 position = Vector2(962, 995)
 
 [node name="UnitNavigationTest2" parent="Testbed5" instance=ExtResource("3_5e3ob")]
-position = Vector2(962, 928)
+position = Vector2(906, 932)
 
 [node name="UnitNavigationTest3" parent="Testbed5" instance=ExtResource("3_5e3ob")]
-position = Vector2(962, 863)
+position = Vector2(995, 876)
+
+[node name="UnitNavigationTest5" parent="Testbed5" instance=ExtResource("3_5e3ob")]
+position = Vector2(1028, 761)
 
 [node name="UnitNavigationTest4" parent="Testbed5" instance=ExtResource("3_5e3ob")]
-position = Vector2(962, 792)
+position = Vector2(942, 812)
+
+[node name="UnitNavigationTest6" parent="Testbed5" instance=ExtResource("3_5e3ob")]
+position = Vector2(962, 982)
+rotation = -3.14159
+
+[node name="UnitNavigationTest7" parent="Testbed5" instance=ExtResource("3_5e3ob")]
+position = Vector2(906, 919)
+rotation = -3.14159
+
+[node name="UnitNavigationTest8" parent="Testbed5" instance=ExtResource("3_5e3ob")]
+position = Vector2(995, 863)
+rotation = -3.14159
+
+[node name="UnitNavigationTest9" parent="Testbed5" instance=ExtResource("3_5e3ob")]
+position = Vector2(1028, 748)
+rotation = -3.14159
+
+[node name="UnitNavigationTest10" parent="Testbed5" instance=ExtResource("3_5e3ob")]
+position = Vector2(942, 799)
+rotation = -3.14159
 
 [node name="UnitManager" type="Node" parent="."]
 script = ExtResource("4_2bkc2")

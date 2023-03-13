@@ -7,18 +7,19 @@ class_name FluidAgentNavigation
 @export var show_debug: bool = false
 @export var agent_attributes: AgentAttributes
 
+# Pathfinding
 signal path_pushed
 var path := []
 var path_offset := Vector2.ZERO
+
+# Cached values
 var acceleration := Vector2.ZERO
 var velocity := Vector2.ZERO
-var target_reached_distance := 5.0
 var heading := Vector2.RIGHT
-var heading_smoother := HeadingSmoother.new(10)
-var is_sleeping := true
+var cummulative_steering_force := Vector2.ZERO
 var neighbors: Array[Node2D] = []
 var force_nodes: Array[BaseForce] = []
-var cummulative_steering_force := Vector2.ZERO
+var heading_smoother := HeadingSmoother.new(10)
 
 
 func _ready() -> void:

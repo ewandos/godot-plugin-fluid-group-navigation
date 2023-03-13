@@ -13,12 +13,16 @@ func calculate_force(agent: FluidAgentNavigation) -> Vector2:
 		if neighbor.movement == agent: continue
 
 		var distance_to_neighbor := agent.global_position.distance_to(neighbor.global_position)
+
+		if distance_to_neighbor >= agent.agent_attributes.neighbor_radius: continue
+
 		var neighbor_force := neighbor.global_position.direction_to(agent.global_position)
 		var neighbor_radius: float = neighbor.movement.agent_attributes.collision_radius
 
 		# if two agents overlap each other, use max force
 		if distance_to_neighbor < (agent.agent_attributes.collision_radius + neighbor_radius):
 			neighbor_force *= agent.agent_attributes.max_force
+			return neighbor_force
 
 		# else interpolate based on the distance between the two agents
 		else:

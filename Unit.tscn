@@ -14,7 +14,7 @@ radius = 30.0
 
 [sub_resource type="Resource" id="Resource_so0a5"]
 script = ExtResource("4_xuln8")
-mass = 1.0
+mass = 3.0
 collision_radius = 30.0
 turning_radius = 90
 max_force = 0.5
@@ -27,7 +27,7 @@ path_stopping_distance = 10
 radius = 100.0
 
 [sub_resource type="Curve" id="Curve_78fvp"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.991875, 1), 0.0, 0.0, 0, 0]
+_data = [Vector2(2.08165e-12, 0.2), 0.0, 0.0, 0, 0, Vector2(0.991875, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [node name="Unit" type="CharacterBody2D" groups=["unit"]]
@@ -46,6 +46,7 @@ shape = SubResource("1")
 [node name="AgentMovement" type="Node2D" parent="." groups=["agent"]]
 script = ExtResource("3_slb73")
 navigation_group = 1
+show_debug = true
 agent_attributes = SubResource("Resource_so0a5")
 
 [node name="Area2D" type="Area2D" parent="AgentMovement"]
@@ -61,7 +62,7 @@ debug_color = Color(0.811765, 0, 0.0117647, 1)
 [node name="AvoidanceForce" type="Node2D" parent="AgentMovement"]
 script = ExtResource("6_32esm")
 distance_scalar_curve = SubResource("Curve_78fvp")
-weight = 0.5
+weight = 0.6
 debug_color = Color(0.231373, 0.470588, 1, 1)
 
 [node name="SeparationForce" type="Node2D" parent="AgentMovement"]
