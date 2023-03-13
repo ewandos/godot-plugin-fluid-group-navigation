@@ -19,5 +19,9 @@ class_name AgentAttributes
 ## Radius in pixel that other agents are detected.
 @export var neighbor_radius := 100.0
 
+## Priority of an agent. Higher value means higher priority
+@export_range(1, 10) var priority := 1
 
-@export var priority := 1
+## Distance between waypoints and the agent that needs to be met
+## for considering the waypoint to be reached
+@export var path_stopping_distance := 10

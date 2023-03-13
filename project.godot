@@ -10,9 +10,10 @@ config_version=5
 
 [application]
 
-config/name="Master-Thesis"
+config/name="Fluid Navigation"
 run/main_scene="res://Game.tscn"
 config/features=PackedStringArray("4.0")
+config/icon="res://assets/icon.svg"
 
 [display]
 

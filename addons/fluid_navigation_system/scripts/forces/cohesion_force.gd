@@ -7,11 +7,14 @@ func calculate_force(agent: FluidAgentNavigation) -> Vector2:
 	var number_of_neighbors := 0
 
 	for neighbor in agent.neighbors:
-		if neighbor.movement == self: continue
+		if neighbor.movement == agent: continue
+
 		var is_in_same_navigation_group: bool = neighbor.movement.navigation_group & agent.navigation_group != 0
 		if not is_in_same_navigation_group: continue
-		var distance_to_neighbor = global_position.distance_to(neighbor.global_position)
+
+		var distance_to_neighbor = agent.global_position.distance_to(neighbor.global_position)
 		if (distance_to_neighbor >= agent.agent_attributes.neighbor_radius): continue
+
 		steering_force += neighbor.global_position
 		number_of_neighbors += 1
 

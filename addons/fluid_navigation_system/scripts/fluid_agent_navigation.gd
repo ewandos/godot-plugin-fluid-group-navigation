@@ -6,7 +6,6 @@ class_name FluidAgentNavigation
 @export_flags_2d_navigation var navigation_group: int
 @export var show_debug: bool = false
 @export var agent_attributes: AgentAttributes
-@export var path_stopping_distance := 10
 
 signal path_pushed
 var path := []
@@ -51,19 +50,10 @@ func steer() -> void:
 	var steering_force = accumulate_steering_forces()
 	steering_force /= agent_attributes.mass
 	acceleration += steering_force
-
-	# update velocity
 	velocity += acceleration
-
-	# limit speed
 	velocity.limit_length(agent_attributes.max_speed)
-
-	# reset acceleration to 0 each cycle
 	acceleration *= 0
-
 	velocity = apply_turning_radius(velocity)
-
-	# smooth the heading
 	heading = heading_smoother.update(velocity.normalized())
 
 
@@ -100,10 +90,16 @@ func accumulate_steering_forces() -> Vector2:
 	cummulative_steering_force = Vector2.ZERO
 	neighbors = area.get_overlapping_bodies()
 
+	var force_count := 0
+
 	for force in force_nodes:
 		cummulative_steering_force += force.calculate_force(self) * force.weight
+		force_count += 1
 		if cummulative_steering_force.length() > agent_attributes.max_force:
 			break
+
+	if force_count < force_nodes.size():
+		print("Cutted forces")
 
 	return cummulative_steering_force
 
@@ -140,4 +136,4 @@ func apply_turning_radius(steering_force: Vector2) -> Vector2:
 func _draw():
 	if not show_debug: return
 	for force_node in force_nodes:
-		draw_line(Vector2.ZERO, force_node.steering_force.rotated(-global_rotation) * 20, force_node.debug_color, 2)
+		draw_line(Vector2.ZERO, force_node.steering_force.rotated(-global_rotation) * 20, force_node.debug_color, 4)

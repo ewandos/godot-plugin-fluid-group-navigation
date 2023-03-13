@@ -7,7 +7,7 @@ func calculate_force(agent: FluidAgentNavigation) -> Vector2:
 	var number_of_neighbors := 0
 
 	for neighbor in agent.neighbors:
-		if neighbor.movement == self: continue
+		if neighbor.movement == agent: continue
 		var is_in_same_navigation_group: bool = neighbor.movement.navigation_group & agent.navigation_group != 0
 		if not is_in_same_navigation_group: continue
 		var distance_to_neighbor = global_position.distance_to(neighbor.global_position)
