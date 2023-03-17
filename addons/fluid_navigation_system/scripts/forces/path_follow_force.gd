@@ -3,8 +3,8 @@ class_name PathFollowForce
 extends BaseForce
 
 ## Follow the provided path
-func calculate_force(agent: FluidAgentNavigation) -> Vector2:
-	steering_force = Vector2.ZERO
+func _calculate_force(agent: FluidAgentNavigation) -> Vector2:
+	var steering_force = Vector2.ZERO
 
 	if agent.path.size() == 0: return Vector2.ZERO
 

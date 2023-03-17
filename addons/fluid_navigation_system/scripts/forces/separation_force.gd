@@ -3,8 +3,8 @@ class_name SeparationSteeringForce
 extends BaseForce
 
 ## Separate two agents from another and keep them from overlapping
-func calculate_force(agent: FluidAgentNavigation) -> Vector2:
-	steering_force = Vector2.ZERO
+func _calculate_force(agent: FluidAgentNavigation) -> Vector2:
+	var steering_force = Vector2.ZERO
 	var number_of_neighbors = 0
 
 	for neighbor in agent.neighbors:

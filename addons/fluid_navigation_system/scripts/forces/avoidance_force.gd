@@ -5,8 +5,9 @@ extends BaseForce
 ## Maps an value between [0, 1] to the apporaching progress between [0, 1] of two agents.
 @export var distance_scalar_curve: Curve
 
-func calculate_force(agent: FluidAgentNavigation) -> Vector2:
-	steering_force = Vector2.ZERO
+## Avoid other agent's desired velocity
+func _calculate_force(agent: FluidAgentNavigation) -> Vector2:
+	var steering_force = Vector2.ZERO
 	var counter_clockwise_perp = agent.heading.orthogonal().normalized()
 
 	for neighbor in agent.neighbors:

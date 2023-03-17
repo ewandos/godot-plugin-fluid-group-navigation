@@ -3,7 +3,6 @@ extends Node2D
 class_name FluidAgentNavigation
 
 @onready var area: Area2D = $Area2D
-@export_flags_2d_navigation var navigation_group: int
 @export var show_debug: bool = false
 @export var agent_attributes: AgentAttributes
 
@@ -58,49 +57,39 @@ func steer() -> void:
 	heading = heading_smoother.update(velocity.normalized())
 
 
+## Computes a steering force to achieve the desired velocity
 func compute_force_to_steer_to_velocity(desired_velocity: Vector2) -> Vector2:
 	var steering_force := desired_velocity - velocity
-	var normalized_length := steering_force.length() / desired_velocity.length()
-	normalized_length = clampf(normalized_length, 0.0, 1.0)
-
-	steering_force = steering_force.normalized()
-	steering_force *= agent_attributes.max_force * normalized_length
-
-	return steering_force
+	return steering_force * agent_attributes.max_force
 
 
-func compute_seek_force(in_target: Vector2, in_b_slowdown: bool) -> Vector2:
+## Computes a steering force to achieve movement to the desired target position
+func compute_seek_force(desired_position: Vector2) -> Vector2:
 	const slowdown_distance := 100.0
-	var desired := in_target - global_position
-	var distance_to_target = desired.length()
+	var desired_velocity := desired_position - global_position
+	var distance_to_target = desired_velocity.length()
 
 	if distance_to_target <= 0: return Vector2.ZERO
 
-	desired = desired.normalized()
-	if in_b_slowdown:
-		var velocity_scalar := distance_to_target / slowdown_distance as float
-		velocity_scalar = clampf(velocity_scalar, 0.0, 1.0)
-		desired *= agent_attributes.max_speed * velocity_scalar
-	else:
-		desired *= agent_attributes.max_speed
+	desired_velocity = desired_velocity.normalized()
 
-	return compute_force_to_steer_to_velocity(desired)
+	# apply an slacar that decreases the velocity
+	# the more closer the agent gets to the target
+	var velocity_scalar := distance_to_target / slowdown_distance as float
+	velocity_scalar = clampf(velocity_scalar, 0.0, 1.0)
+	desired_velocity *= agent_attributes.max_speed * velocity_scalar
+
+	return compute_force_to_steer_to_velocity(desired_velocity)
 
 
 func accumulate_steering_forces() -> Vector2:
 	cummulative_steering_force = Vector2.ZERO
 	neighbors = area.get_overlapping_bodies()
 
-	var force_count := 0
-
 	for force in force_nodes:
-		cummulative_steering_force += force.calculate_force(self) * force.weight
-		force_count += 1
+		cummulative_steering_force += force.get_force(self)
 		if cummulative_steering_force.length() > agent_attributes.max_force:
 			break
-
-	if force_count < force_nodes.size():
-		print("Cutted forces")
 
 	return cummulative_steering_force
 
@@ -137,4 +126,4 @@ func apply_turning_radius(steering_force: Vector2) -> Vector2:
 func _draw():
 	if not show_debug: return
 	for force_node in force_nodes:
-		draw_line(Vector2.ZERO, force_node.steering_force.rotated(-global_rotation) * 20, force_node.debug_color, 4)
+		draw_line(Vector2.ZERO, force_node.get_force(self).rotated(-global_rotation) * 100, force_node.debug_color, 2)
