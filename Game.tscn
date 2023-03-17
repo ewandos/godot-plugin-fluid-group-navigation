@@ -22,47 +22,8 @@ navigation_polygon = SubResource("NavigationPolygon_2brp5")
 [node name="Testbed5" type="Node2D" parent="."]
 position = Vector2(0, 80)
 
-[node name="UnitNavigationTest" parent="Testbed5" instance=ExtResource("3_5e3ob")]
-position = Vector2(992, 1006)
-
 [node name="UnitNavigationTest2" parent="Testbed5" instance=ExtResource("3_5e3ob")]
-position = Vector2(1031, 924)
-
-[node name="UnitNavigationTest3" parent="Testbed5" instance=ExtResource("3_5e3ob")]
-position = Vector2(967, 838)
-
-[node name="UnitNavigationTest4" parent="Testbed5" instance=ExtResource("3_5e3ob")]
-position = Vector2(1074, 1105)
-
-[node name="UnitNavigationTest5" parent="Testbed5" instance=ExtResource("3_5e3ob")]
-position = Vector2(867, 973)
-
-[node name="UnitNavigationTest6" parent="Testbed5" instance=ExtResource("3_5e3ob")]
-position = Vector2(888, 1101)
-
-[node name="UnitNavigationTest7" parent="Testbed5" instance=ExtResource("3_5e3ob")]
-position = Vector2(992, 988)
-rotation = -3.14159
-
-[node name="UnitNavigationTest8" parent="Testbed5" instance=ExtResource("3_5e3ob")]
-position = Vector2(1031, 906)
-rotation = -3.14159
-
-[node name="UnitNavigationTest9" parent="Testbed5" instance=ExtResource("3_5e3ob")]
-position = Vector2(967, 820)
-rotation = -3.14159
-
-[node name="UnitNavigationTest10" parent="Testbed5" instance=ExtResource("3_5e3ob")]
-position = Vector2(1074, 1087)
-rotation = -3.14159
-
-[node name="UnitNavigationTest11" parent="Testbed5" instance=ExtResource("3_5e3ob")]
-position = Vector2(867, 955)
-rotation = -3.14159
-
-[node name="UnitNavigationTest12" parent="Testbed5" instance=ExtResource("3_5e3ob")]
-position = Vector2(888, 1083)
-rotation = -3.14159
+position = Vector2(985, 963)
 
 [node name="UnitManager" type="Node" parent="."]
 script = ExtResource("4_2bkc2")
