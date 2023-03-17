@@ -9,7 +9,6 @@ script = ExtResource("1_mjg25")
 
 [node name="Unit" parent="." instance=ExtResource("2_4qge6")]
 position = Vector2(-800, 2.08165e-12)
-speed = 2.0
 
 [node name="TargetPosition" type="Marker2D" parent="."]
 position = Vector2(800, 2.08165e-12)

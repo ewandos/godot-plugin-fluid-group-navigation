@@ -2,7 +2,6 @@
 extends Node2D
 class_name FluidAgentNavigation
 
-@onready var area: Area2D = $Area2D
 @export var show_debug: bool = false
 @export var agent_attributes: AgentAttributes
 
@@ -19,15 +18,27 @@ var cummulative_steering_force := Vector2.ZERO
 var neighbors: Array[Node2D] = []
 var force_nodes: Array[BaseForce] = []
 var heading_smoother := HeadingSmoother.new(10)
-
+var area: Area2D
 
 func _ready() -> void:
 	heading = heading.rotated(global_rotation)
 	force_nodes.assign(find_children("*", "BaseForce", true))
 
+	var circle_shape_2d_res := CircleShape2D.new()
+	circle_shape_2d_res.radius = agent_attributes.neighbor_radius
+
+	var collision_shape_2d_node := CollisionShape2D.new()
+	collision_shape_2d_node.shape = circle_shape_2d_res
+
+	var area_2d_node := Area2D.new()
+	area_2d_node.add_child(collision_shape_2d_node)
+
+	add_child(area_2d_node)
+	area = area_2d_node
+
 
 func set_destination(target: Vector2, with_offset: Vector2 = Vector2.ZERO) -> void:
-	path = calculate_path(global_position, target)
+	path = _calculate_path(global_position, target)
 	path_offset = with_offset
 	path_pushed.emit(get_instance_id(), path)
 
@@ -41,19 +52,19 @@ func calc_velocity() -> Vector2:
 	if path.size() == 0:
 		return Vector2.ZERO
 
-	steer()
+	_steer()
 	queue_redraw()
 	return velocity
 
 
-func steer() -> void:
-	var steering_force = accumulate_steering_forces()
+func _steer() -> void:
+	var steering_force = _accumulate_steering_forces()
 	steering_force /= agent_attributes.mass
 	acceleration += steering_force
 	velocity += acceleration
 	velocity.limit_length(agent_attributes.max_speed)
 	acceleration *= 0
-	velocity = apply_turning_radius(velocity)
+	velocity = _apply_turning_radius(velocity)
 	heading = heading_smoother.update(velocity.normalized())
 
 
@@ -82,7 +93,7 @@ func compute_seek_force(desired_position: Vector2) -> Vector2:
 	return compute_force_to_steer_to_velocity(desired_velocity)
 
 
-func accumulate_steering_forces() -> Vector2:
+func _accumulate_steering_forces() -> Vector2:
 	cummulative_steering_force = Vector2.ZERO
 	neighbors = area.get_overlapping_bodies()
 
@@ -94,7 +105,7 @@ func accumulate_steering_forces() -> Vector2:
 	return cummulative_steering_force
 
 
-func calculate_path(start_position: Vector2, target_position: Vector2) -> PackedVector2Array:
+func _calculate_path(start_position: Vector2, target_position: Vector2) -> PackedVector2Array:
 	var parameter := NavigationPathQueryParameters2D.new()
 	parameter.path_postprocessing = NavigationPathQueryParameters2D.PATH_POSTPROCESSING_CORRIDORFUNNEL
 	parameter.start_position = start_position
@@ -107,7 +118,7 @@ func calculate_path(start_position: Vector2, target_position: Vector2) -> Packed
 	return result
 
 
-func apply_turning_radius(steering_force: Vector2) -> Vector2:
+func _apply_turning_radius(steering_force: Vector2) -> Vector2:
 	var force_angle = abs(steering_force.angle_to(heading))
 	var angle_in_degree = rad_to_deg(force_angle)
 	var max_angle_rad = deg_to_rad(agent_attributes.turning_radius)

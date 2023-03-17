@@ -2,7 +2,6 @@ extends CharacterBody2D
 class_name Unit
 
 @export var color: Color
-@export var speed: float = 1.0
 var is_selected := false
 
 @onready var sprite: Sprite2D = $Sprite2D

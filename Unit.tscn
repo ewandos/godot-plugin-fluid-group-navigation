@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://csk4clgpbfbcs"]
+[gd_scene load_steps=12 format=3 uid="uid://csk4clgpbfbcs"]
 
 [ext_resource type="Script" path="res://Unit.gd" id="1_kksq3"]
 [ext_resource type="Texture2D" uid="uid://cw2ut2e27tboj" path="res://unit.png" id="2_wydow"]
@@ -14,7 +14,7 @@ radius = 30.0
 
 [sub_resource type="Resource" id="Resource_so0a5"]
 script = ExtResource("4_xuln8")
-mass = 1.0
+mass = 5.0
 collision_radius = 30.0
 turning_radius = 90
 max_force = 0.5
@@ -22,9 +22,6 @@ max_speed = 1
 neighbor_radius = 100.0
 priority = 1
 path_stopping_distance = 10
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_o4sxb"]
-radius = 100.0
 
 [sub_resource type="Curve" id="Curve_78fvp"]
 _data = [Vector2(2.08165e-12, 0.25), 0.0, 0.75, 0, 1, Vector2(1, 1), 0.0, 0.0, 0, 0]
@@ -47,11 +44,6 @@ shape = SubResource("1")
 script = ExtResource("3_slb73")
 show_debug = true
 agent_attributes = SubResource("Resource_so0a5")
-
-[node name="Area2D" type="Area2D" parent="AgentMovement"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AgentMovement/Area2D"]
-shape = SubResource("CircleShape2D_o4sxb")
 
 [node name="PathFollowForce" type="Node2D" parent="AgentMovement"]
 script = ExtResource("5_qx8g0")
