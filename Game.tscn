@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://UnitSelector.gd" id="1"]
 [ext_resource type="Script" path="res://Game.gd" id="1_r2ja2"]
-[ext_resource type="PackedScene" uid="uid://om0elit3bi7v" path="res://UnitNavigationTest.tscn" id="3_5e3ob"]
+[ext_resource type="PackedScene" uid="uid://csk4clgpbfbcs" path="res://Unit.tscn" id="2_kt3s7"]
 [ext_resource type="Script" path="res://UnitManager.gd" id="4_2bkc2"]
 [ext_resource type="Script" path="res://SelectionManager.gd" id="5_6ui6o"]
 [ext_resource type="Script" path="res://PathRenderer.gd" id="6_vmfsf"]
@@ -22,8 +22,7 @@ navigation_polygon = SubResource("NavigationPolygon_2brp5")
 [node name="Testbed5" type="Node2D" parent="."]
 position = Vector2(0, 80)
 
-[node name="UnitNavigationTest2" parent="Testbed5" instance=ExtResource("3_5e3ob")]
-position = Vector2(985, 963)
+[node name="Unit" parent="Testbed5" instance=ExtResource("2_kt3s7")]
 
 [node name="UnitManager" type="Node" parent="."]
 script = ExtResource("4_2bkc2")

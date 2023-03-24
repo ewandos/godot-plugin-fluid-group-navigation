@@ -15,7 +15,7 @@ radius = 30.0
 [sub_resource type="Resource" id="Resource_so0a5"]
 script = ExtResource("4_xuln8")
 mass = 1.0
-collision_radius = 30.0
+collision_radius = 100.0
 turning_radius = 90
 max_force = 0.5
 max_speed = 1
@@ -42,7 +42,6 @@ shape = SubResource("1")
 
 [node name="AgentMovement" type="Node2D" parent="." groups=["agent"]]
 script = ExtResource("3_slb73")
-show_debug = true
 agent_attributes = SubResource("Resource_so0a5")
 
 [node name="PathFollowForce" type="Node2D" parent="AgentMovement"]

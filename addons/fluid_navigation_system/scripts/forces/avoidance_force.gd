@@ -23,8 +23,9 @@ func _calculate_force(agent: FluidAgentNavigation) -> Vector2:
 		var projected_sidestep = to_neighbor.project(agent.heading)
 		var sidestep_direction = (to_neighbor - projected_sidestep) * -1
 
-		var neighbor_neighbor_radius: float = neighbor.movement.agent_attributes.neighbor_radius
-		var approaching_progress = 1 - (agent.global_position.distance_to(neighbor.global_position) / neighbor_neighbor_radius)
+		var neighbor_radius_of_neighbor: float = neighbor.movement.agent_attributes.neighbor_radius
+		var collision_radius_of_neighbor: float = neighbor.movement.agent_attributes.collision_radius
+		var approaching_progress = 1 - ((agent.global_position.distance_to(neighbor.global_position) - collision_radius_of_neighbor) / neighbor_radius_of_neighbor)
 		var sidestep_force = sidestep_direction.normalized()
 		sidestep_force *= agent.agent_attributes.max_force
 		steering_force += sidestep_force

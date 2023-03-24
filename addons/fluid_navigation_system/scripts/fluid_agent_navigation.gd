@@ -18,23 +18,25 @@ var cummulative_steering_force := Vector2.ZERO
 var neighbors: Array[Node2D] = []
 var force_nodes: Array[BaseForce] = []
 var heading_smoother := HeadingSmoother.new(10)
-var area: Area2D
+var neighbor_area: Area2D
 
 func _ready() -> void:
 	heading = heading.rotated(global_rotation)
 	force_nodes.assign(find_children("*", "BaseForce", true))
 
-	var circle_shape_2d_res := CircleShape2D.new()
-	circle_shape_2d_res.radius = agent_attributes.neighbor_radius
+	if neighbor_area == null and find_child("NeighborArea2D") == null:
+		var circle_shape_2d_res := CircleShape2D.new()
+		circle_shape_2d_res.radius = agent_attributes.neighbor_radius
 
-	var collision_shape_2d_node := CollisionShape2D.new()
-	collision_shape_2d_node.shape = circle_shape_2d_res
+		var collision_shape_2d_node := CollisionShape2D.new()
+		collision_shape_2d_node.shape = circle_shape_2d_res
 
-	var area_2d_node := Area2D.new()
-	area_2d_node.add_child(collision_shape_2d_node)
+		var area_2d_node := Area2D.new()
+		area_2d_node.name = "NeighborArea2D"
+		area_2d_node.add_child(collision_shape_2d_node)
 
-	add_child(area_2d_node)
-	area = area_2d_node
+		add_child(area_2d_node)
+		neighbor_area = area_2d_node
 
 
 func set_destination(target: Vector2, with_offset: Vector2 = Vector2.ZERO) -> void:
@@ -95,7 +97,7 @@ func compute_seek_force(desired_position: Vector2) -> Vector2:
 
 func _accumulate_steering_forces() -> Vector2:
 	cummulative_steering_force = Vector2.ZERO
-	neighbors = area.get_overlapping_bodies()
+	neighbors = neighbor_area.get_overlapping_bodies()
 
 	for force in force_nodes:
 		cummulative_steering_force += force.get_force(self)
@@ -137,4 +139,4 @@ func _apply_turning_radius(steering_force: Vector2) -> Vector2:
 func _draw():
 	if not show_debug: return
 	for force_node in force_nodes:
-		draw_line(Vector2.ZERO, force_node.get_force(self).rotated(-global_rotation) * 100, force_node.debug_color, 2)
+		draw_line(Vector2.ZERO, force_node.force.rotated(-global_rotation) * 100, force_node.debug_color, 2)
