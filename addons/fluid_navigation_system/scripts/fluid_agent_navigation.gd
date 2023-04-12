@@ -39,15 +39,14 @@ func _ready() -> void:
 		neighbor_area = area_2d_node
 
 
-func set_destination(target: Vector2, with_offset: Vector2 = Vector2.ZERO) -> void:
-	path = _calculate_path(global_position, target)
+func set_destination(target: Vector2, with_offset: Vector2 = Vector2.ZERO, append: bool = false) -> void:
+	if append && path.size() > 0:
+		path.append_array(_calculate_path(path[path.size() - 1], target))
+	else:
+		path = _calculate_path(global_position, target)
+
 	path_offset = with_offset
-	path_pushed.emit(get_instance_id(), path)
-
-
-func set_path(new_path: PackedVector2Array) -> void:
-	path = new_path
-	path_pushed.emit(get_instance_id(), new_path)
+	path_pushed.emit(get_instance_id(), path, global_position, with_offset)
 
 
 func calc_velocity() -> Vector2:

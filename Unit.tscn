@@ -42,6 +42,7 @@ shape = SubResource("1")
 
 [node name="AgentMovement" type="Node2D" parent="." groups=["agent"]]
 script = ExtResource("3_slb73")
+show_debug = true
 agent_attributes = SubResource("Resource_so0a5")
 
 [node name="PathFollowForce" type="Node2D" parent="AgentMovement"]

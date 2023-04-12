@@ -11,7 +11,7 @@ func _calculate_force(agent: FluidAgentNavigation) -> Vector2:
 	var counter_clockwise_perp = agent.heading.orthogonal().normalized()
 
 	for neighbor in agent.neighbors:
-		if neighbor.movement == agent: continue
+		if neighbor.is_in_group("agent") and neighbor.movement == agent: continue
 
 		var direction_to_neighbor := agent.global_position.direction_to(neighbor.global_position)
 

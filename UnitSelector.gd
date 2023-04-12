@@ -41,6 +41,7 @@ func _input(event):
 			var results = space.intersect_shape(query)
 
 			for result in results:
+				if not result.collider is Unit: continue
 				selected_units.append(result.collider)
 				result.collider.select()
 

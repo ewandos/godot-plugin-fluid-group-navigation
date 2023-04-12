@@ -9,7 +9,7 @@ func _calculate_force(agent: FluidAgentNavigation) -> Vector2:
 	var number_of_neighbors := 0
 
 	for neighbor in agent.neighbors:
-		if neighbor.movement == agent: continue
+		if neighbor.is_in_group("agent") and neighbor.movement == agent: continue
 		average_neighbor_position += neighbor.global_position
 		number_of_neighbors += 1
 
