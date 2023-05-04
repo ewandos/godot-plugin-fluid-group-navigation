@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://bi0f4xab27un2"]
+
+[ext_resource type="Script" path="res://addons/fluid_navigation_system/scripts/navigation_grid_2d.gd" id="1_d7rg8"]
+
+[node name="NavigationGrid2D" type="Node2D" groups=["grid"]]
+script = ExtResource("1_d7rg8")
+offset = Vector2(32, 32)
