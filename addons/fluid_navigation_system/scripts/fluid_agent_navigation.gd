@@ -12,6 +12,7 @@ var path := []
 var path_offset := Vector2.ZERO
 
 # Cached values
+var is_moving := false
 var acceleration := Vector2.ZERO
 var velocity := Vector2.ZERO
 var heading := Vector2.RIGHT
@@ -52,10 +53,14 @@ func set_destination(target: Vector2, with_offset: Vector2 = Vector2.ZERO, appen
 
 func calc_velocity() -> Vector2:
 	if path.size() == 0:
+		if is_moving:
+			is_moving = false
+			path_resolved.emit()
 		return Vector2.ZERO
 
 	_steer()
 	queue_redraw()
+	is_moving = true
 	return velocity
 
 

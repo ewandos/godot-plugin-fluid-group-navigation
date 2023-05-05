@@ -3,14 +3,22 @@ class_name Unit
 
 @export var color: Color
 var is_selected := false
+signal reached_target
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var movement: FluidAgentNavigation = $AgentMovement
+
+func _ready() -> void:
+	movement.path_resolved.connect(func(): reached_target.emit())
 
 func _physics_process(_delta):
 	velocity = movement.calc_velocity() * 100
 	sprite.look_at(global_position + movement.heading)
 	move_and_slide()
+
+func move_to(position: Vector2) -> void:
+	if not is_inside_tree(): await ready
+	movement.set_destination(position)
 
 func select() -> void:
 	sprite.modulate = color

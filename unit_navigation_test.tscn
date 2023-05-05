@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://om0elit3bi7v"]
+[gd_scene load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://UnitNavigationTest.gd" id="1_mjg25"]
+[ext_resource type="Script" path="res://unit_navigation_test.gd" id="1_mjg25"]
 [ext_resource type="PackedScene" uid="uid://csk4clgpbfbcs" path="res://Unit.tscn" id="2_4qge6"]
 
 [node name="UnitNavigationTest" type="Node2D"]

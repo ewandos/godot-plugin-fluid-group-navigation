@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://dy2twy2jjryeq"]
+
+[ext_resource type="PackedScene" uid="uid://6btsgg62ep8a" path="res://fluid_navigation_simulation.tscn" id="1_oyhty"]
+
+[node name="Simulation" type="Node2D"]
+
+[node name="FluidNavigationSimulation" parent="." instance=ExtResource("1_oyhty")]

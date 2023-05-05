@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://qqu4t0msrw3y"]
+
+[ext_resource type="PackedScene" path="res://rvo_agent.tscn" id="1_kaevk"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_130r4"]
+vertices = PackedVector2Array(-43, -29, 1935, -2, 1939, 1949, -41, 1947)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-43, -29, 1935, -2, 1939, 1949, -41, 1947)])
+
+[node name="RvoNavigationSimulation" type="Node2D"]
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_130r4")
+
+[node name="RvoUnit" parent="." instance=ExtResource("1_kaevk")]

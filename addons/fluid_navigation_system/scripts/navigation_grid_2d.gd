@@ -4,7 +4,7 @@ extends Node2D
 
 @export var show_grid := true:
 	set = _set_show_grid
-@export var size := Vector2(20, 20):
+@export var size := Vector2i(20, 20):
 	set = _set_size
 @export var cell_size := Vector2(64, 64):
 	set = _set_cell_size
@@ -44,14 +44,18 @@ func _set_show_grid(value: bool) -> void:
 
 func _set_blocked_cells(value: PackedVector2Array) -> void:
 	blocked_cells = value
-	await ready
+	if not is_inside_tree(): await ready
 	for cell in blocked_cells:
 		astar_grid.set_point_solid(cell)
 	queue_redraw()
 
+
 func _set_grid_color(value: Color) -> void:
 	grid_color = value
 	queue_redraw()
+
+func get_world_position(cell: Vector2i) -> Vector2:
+	return Vector2(cell.x * cell_size.x + offset.x, cell.y * cell_size.y + offset.y)
 
 func _draw() -> void:
 	if not show_grid: return

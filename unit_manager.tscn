@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://shtwt38wv6vg"]
+
+[ext_resource type="Script" path="res://unit_manager.gd" id="1_pgjpw"]
+[ext_resource type="Script" path="res://selection_manager.gd" id="2_cbfx4"]
+[ext_resource type="Script" path="res://unit_selector.gd" id="3_k4npt"]
+
+[node name="UnitManager" type="Node"]
+script = ExtResource("1_pgjpw")
+
+[node name="SelectionManager" type="Node" parent="."]
+script = ExtResource("2_cbfx4")
+
+[node name="Selector" type="Node2D" parent="."]
+script = ExtResource("3_k4npt")
+color = Color(0.247059, 0.74902, 0.254902, 0.313726)
