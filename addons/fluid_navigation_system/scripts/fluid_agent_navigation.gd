@@ -6,8 +6,12 @@ class_name FluidAgentNavigation
 @export var agent_attributes: AgentAttributes
 
 # Pathfinding
-signal path_pushed
-signal path_resolved
+signal path_pushed(id: int, path: PackedVector2Array, target: Vector2, offset: Vector2)
+signal path_resolved(id: int)
+signal moved(id: int, position: Vector2)
+signal calculated_velocity(id: int, velocity: Vector2)
+signal collided(id: int)
+
 var path := []
 var path_offset := Vector2.ZERO
 
@@ -37,9 +41,14 @@ func _ready() -> void:
 		area_2d_node.name = "NeighborArea2D"
 		area_2d_node.add_child(collision_shape_2d_node)
 
+		area_2d_node.body_entered.connect(_on_body_entered)
 		add_child(area_2d_node)
 		neighbor_area = area_2d_node
 
+func _on_body_entered(body: Node2D) -> void:
+	if not body is Unit or body == get_parent(): return
+	if body.global_position.distance_to(global_position) < (agent_attributes.collision_radius / 2):
+		collided.emit(get_instance_id())
 
 func set_destination(target: Vector2, with_offset: Vector2 = Vector2.ZERO, append: bool = false) -> void:
 	if append && path.size() > 0:
@@ -55,12 +64,14 @@ func calc_velocity() -> Vector2:
 	if path.size() == 0:
 		if is_moving:
 			is_moving = false
-			path_resolved.emit()
+			path_resolved.emit(get_instance_id())
 		return Vector2.ZERO
 
 	_steer()
 	queue_redraw()
 	is_moving = true
+	calculated_velocity.emit(get_instance_id(), velocity)
+	moved.emit(get_instance_id(), global_position)
 	return velocity
 
 
@@ -115,7 +126,6 @@ func _accumulate_steering_forces() -> Vector2:
 func _calculate_path(start_position: Vector2, target_position: Vector2) -> PackedVector2Array:
 	var result := get_tree().get_first_node_in_group('grid').calculate_path(start_position, target_position) as PackedVector2Array
 	if result.size() == 0: return result
-	result.remove_at(0)
 	return result
 
 
@@ -133,7 +143,6 @@ func _apply_turning_radius(steering_force: Vector2) -> Vector2:
 
 		return steering_force.rotated(angle_correction)
 	return steering_force
-
 
 func _draw():
 	if not show_debug: return

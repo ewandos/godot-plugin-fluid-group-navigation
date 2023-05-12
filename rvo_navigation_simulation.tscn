@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://qqu4t0msrw3y"]
+[gd_scene load_steps=3 format=3 uid="uid://d3q06ep8tidqa"]
 
 [ext_resource type="PackedScene" path="res://rvo_agent.tscn" id="1_kaevk"]
 

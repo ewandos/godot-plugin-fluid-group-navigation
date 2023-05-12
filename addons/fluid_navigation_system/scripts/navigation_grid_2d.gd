@@ -49,6 +49,10 @@ func _set_blocked_cells(value: PackedVector2Array) -> void:
 		astar_grid.set_point_solid(cell)
 	queue_redraw()
 
+func clear_grid() -> void:
+	for cell in blocked_cells:
+		astar_grid.set_point_solid(cell, false)
+	queue_redraw()
 
 func _set_grid_color(value: Color) -> void:
 	grid_color = value

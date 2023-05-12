@@ -8,27 +8,49 @@ enum Directions {LEFT, RIGHT, TOP, BOTTOM}
 @export_range(1, 100) var random_blocked_cells := 10
 @export_range(1, 20) var agent_count := 5
 @export var test_margin := 4
-@export var predefined_maps: Array[PackedVector2Array] = []
-@export var agent: PackedScene
+@export var predefined_maps: Array[Map] = []
+@export var unit: PackedScene
 @onready var navigation_grid := $NavigationGrid2D as NavigationGrid2D
 
 var test_index := 0
+var test_hash: int = Time.get_datetime_string_from_system().hash()
 
-# per test vars
-var completed_paths := 0
-var agents := []
+var units: Array[Unit] = []
+var data_crawler: DataCrawler
 
 func _ready() -> void:
-	completed_test.connect(_on_completed_test)
 	randomize()
+	seed(1602)
 	initialize_test()
 
 func initialize_test() -> void:
 	var should_use_predefined_maps: bool = test_index < predefined_maps.size()
 	var should_use_random_map: bool = not should_use_predefined_maps and test_index < (predefined_maps.size() + random_iterations)
+	var test_id: String
+
 	if should_use_predefined_maps:
-		navigation_grid.blocked_cells = predefined_maps[test_index]
+		var map: Map = predefined_maps[test_index]
+
+		navigation_grid.blocked_cells = map.blocked_cells
+
+		for i in map.unit_spawns.size():
+			var starting_cell = map.unit_spawns[i]
+			var target_cell = map.unit_targets[i]
+
+			var start_world_position = navigation_grid.get_world_position(starting_cell)
+			var target_world_position = navigation_grid.get_world_position(target_cell)
+
+			var unit_instance = unit.instantiate() as Unit
+			units.append(unit_instance)
+			unit_instance.global_position = start_world_position
+			unit_instance.move_to(target_world_position)
+			add_child(unit_instance)
+
+		test_id = var_to_str(test_hash) + '_' + var_to_str(test_index) + '_' + map.name
+
 	elif should_use_random_map:
+
+		test_id =  var_to_str(test_hash) + '_' + var_to_str(test_index)
 
 		# place random blocked cells
 		var blocked_cells := PackedVector2Array()
@@ -39,34 +61,39 @@ func initialize_test() -> void:
 
 		navigation_grid.blocked_cells = blocked_cells
 
-	# place random units
-	for i in agent_count:
-		var starting_direction = i % Directions.keys().size()
-		var target_direction = (starting_direction + 2) % Directions.keys().size()
-		var starting_cell = _get_random_cell_on_border(starting_direction)
-		var target_cell = _get_random_cell_on_border(target_direction)
+		# place random units
+		for i in agent_count:
+			var starting_direction = i % Directions.keys().size()
+			var target_direction = (starting_direction + 2) % Directions.keys().size()
+			var starting_cell = _get_random_cell_on_border(starting_direction)
+			var target_cell = _get_random_cell_on_border(target_direction)
 
-		var start_world_position = navigation_grid.get_world_position(starting_cell)
-		var target_world_position = navigation_grid.get_world_position(target_cell)
+			var start_world_position = navigation_grid.get_world_position(starting_cell)
+			var target_world_position = navigation_grid.get_world_position(target_cell)
 
-		var agent_instance = agent.instantiate() as Unit
-		agent_instance.global_position = start_world_position
-		agent_instance.move_to(target_world_position)
-		agent_instance.reached_target.connect(_on_reached_target)
-		add_child(agent_instance)
+			var unit_instance = unit.instantiate() as Unit
+			units.append(unit_instance)
+			unit_instance.global_position = start_world_position
+			unit_instance.move_to(target_world_position)
+			add_child(unit_instance)
+
+	data_crawler = DataCrawler.new()
+	add_child(data_crawler)
+	data_crawler.initialize(units, test_id)
+	data_crawler.all_agents_have_completed.connect(_on_all_agents_have_completed)
 
 	test_index += 1
 	print('Initialization for test #', test_index, ' completed.')
 
-func _on_reached_target() -> void:
-	completed_paths += 1
-	print('Unit completed path.')
-
-	if agent_count == completed_paths:
-		completed_test.emit()
-
-func _on_completed_test() -> void:
+func _on_all_agents_have_completed() -> void:
 	print('Completed test #' , test_index, '.')
+	data_crawler.export_data()
+	navigation_grid.clear_grid()
+	for unit in units:
+		unit.queue_free()
+	data_crawler.queue_free()
+	units.clear()
+	initialize_test()
 
 func _get_random_cell_on_border(direction: Directions) -> Vector2i:
 	var random_x := 0

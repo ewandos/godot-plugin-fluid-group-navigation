@@ -1,21 +1,24 @@
-[gd_scene load_steps=5 format=3 uid="uid://6btsgg62ep8a"]
+[gd_scene load_steps=6 format=3 uid="uid://6btsgg62ep8a"]
 
 [ext_resource type="Script" path="res://fluid_navigation_simulation.gd" id="1_lsxnf"]
 [ext_resource type="PackedScene" uid="uid://bi0f4xab27un2" path="res://navigation_grid_2d.tscn" id="1_mc4ad"]
-[ext_resource type="Script" path="res://fluid_navigation_test.gd" id="4_b2ib1"]
+[ext_resource type="Script" path="res://map.gd" id="2_2jf71"]
 [ext_resource type="PackedScene" uid="uid://csk4clgpbfbcs" path="res://Unit.tscn" id="6_ye335"]
+
+[sub_resource type="Resource" id="Resource_sawx5"]
+script = ExtResource("2_2jf71")
+name = "Map"
+blocked_cells = PackedVector2Array(10, 10)
+unit_spawns = PackedVector2Array(10, 15)
+unit_targets = PackedVector2Array(10, 2)
 
 [node name="FluidNavigationSimulation" type="Node2D"]
 script = ExtResource("1_lsxnf")
-random_blocked_cells = 40
-agent_count = 10
-test_margin = 5
-agent = ExtResource("6_ye335")
+test_margin = 2
+predefined_maps = Array[ExtResource("2_2jf71")]([SubResource("Resource_sawx5")])
+unit = ExtResource("6_ye335")
 
-[node name="FluidNavigationTest" type="Node2D" parent="."]
-script = ExtResource("4_b2ib1")
-
-[node name="NavigationGrid2D" parent="FluidNavigationTest" instance=ExtResource("1_mc4ad")]
+[node name="NavigationGrid2D" parent="." instance=ExtResource("1_mc4ad")]
 position = Vector2(0, 1)
 size = Vector2i(30, 30)
 blocked_cells = PackedVector2Array()
