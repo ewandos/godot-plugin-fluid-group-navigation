@@ -61,6 +61,9 @@ func _set_grid_color(value: Color) -> void:
 func get_world_position(cell: Vector2i) -> Vector2:
 	return Vector2(cell.x * cell_size.x + offset.x, cell.y * cell_size.y + offset.y)
 
+func get_cell_position(world: Vector2) -> Vector2i:
+	return (world / cell_size).floor()
+
 func _draw() -> void:
 	if not show_grid: return
 
