@@ -10,6 +10,7 @@ enum Directions {LEFT, RIGHT, TOP, BOTTOM}
 @export var test_margin := 4
 @export var predefined_maps: Array[Map] = []
 @export var unit: PackedScene
+
 @onready var navigation_grid := $NavigationGrid2D as NavigationGrid2D
 
 var test_index := 0

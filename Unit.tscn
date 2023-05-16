@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://csk4clgpbfbcs"]
+[gd_scene load_steps=11 format=3 uid="uid://csk4clgpbfbcs"]
 
 [ext_resource type="Script" path="res://Unit.gd" id="1_kksq3"]
 [ext_resource type="Texture2D" uid="uid://cw2ut2e27tboj" path="res://unit.png" id="2_wydow"]
@@ -7,7 +7,6 @@
 [ext_resource type="Script" path="res://addons/fluid_navigation_system/scripts/forces/path_follow_force.gd" id="5_qx8g0"]
 [ext_resource type="Script" path="res://addons/fluid_navigation_system/scripts/forces/avoidance_force.gd" id="6_32esm"]
 [ext_resource type="Script" path="res://addons/fluid_navigation_system/scripts/forces/separation_force.gd" id="7_g4gv7"]
-[ext_resource type="Script" path="res://addons/fluid_navigation_system/scripts/forces/cohesion_force.gd" id="8_fuseg"]
 
 [sub_resource type="CircleShape2D" id="1"]
 radius = 30.0
@@ -60,8 +59,3 @@ debug_color = Color(0.231373, 0.470588, 1, 1)
 script = ExtResource("7_g4gv7")
 weight = 0.2
 debug_color = Color(1, 1, 0, 1)
-
-[node name="CohesionForce" type="Node2D" parent="AgentMovement"]
-script = ExtResource("8_fuseg")
-weight = 0.3
-debug_color = Color(0, 0, 0, 1)

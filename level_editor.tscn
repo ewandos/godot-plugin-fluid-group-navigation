@@ -1,7 +1,27 @@
-[gd_scene load_steps=3 format=3 uid="uid://deui648kyhhbx"]
+[gd_scene load_steps=8 format=3 uid="uid://deui648kyhhbx"]
 
 [ext_resource type="Script" path="res://addons/fluid_navigation_system/scripts/navigation_grid_2d.gd" id="1_3vg6i"]
 [ext_resource type="Script" path="res://level_editor.gd" id="1_xxgit"]
+[ext_resource type="Script" path="res://save_map_input.gd" id="3_wrqnk"]
+[ext_resource type="Script" path="res://load_map.gd" id="4_3t7bf"]
+[ext_resource type="Script" path="res://map_list.gd" id="4_k27gk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5alld"]
+bg_color = Color(0.819608, 0.819608, 0.819608, 1)
+expand_margin_left = 10.0
+expand_margin_top = 10.0
+expand_margin_right = 10.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p4c7s"]
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 10.0
+expand_margin_top = 10.0
+expand_margin_right = 10.0
+expand_margin_bottom = 10.0
 
 [node name="MapEditor" type="Node2D"]
 script = ExtResource("1_xxgit")
@@ -11,3 +31,75 @@ script = ExtResource("1_3vg6i")
 size = Vector2i(30, 30)
 offset = Vector2(32, 32)
 blocked_cells = PackedVector2Array()
+
+[node name="UI" type="CanvasLayer" parent="."]
+offset = Vector2(-960, -960)
+scale = Vector2(2, 2)
+transform = Transform2D(2, 0, 0, 2, -960, -960)
+
+[node name="SaveMap" type="PanelContainer" parent="UI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -195.0
+offset_top = -213.5
+offset_right = 200.0
+offset_bottom = -175.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_5alld")
+script = ExtResource("3_wrqnk")
+
+[node name="HBox" type="HBoxContainer" parent="UI/SaveMap"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/SaveMap/HBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Map Name"
+
+[node name="TextEdit" type="TextEdit" parent="UI/SaveMap/HBox"]
+custom_minimum_size = Vector2(200, 38)
+layout_mode = 2
+placeholder_text = "Enter name"
+
+[node name="Button" type="Button" parent="UI/SaveMap/HBox"]
+layout_mode = 2
+text = "Save to Disk"
+
+[node name="LoadMap" type="PanelContainer" parent="UI"]
+custom_minimum_size = Vector2(300, 300)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_p4c7s")
+script = ExtResource("4_3t7bf")
+
+[node name="VBox" type="VBoxContainer" parent="UI/LoadMap"]
+layout_mode = 2
+
+[node name="MapList" type="ItemList" parent="UI/LoadMap/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+auto_height = true
+item_count = 1
+item_0/text = "Map #1"
+script = ExtResource("4_k27gk")
+
+[node name="LoadButton" type="Button" parent="UI/LoadMap/VBox"]
+layout_mode = 2
+text = "Load"
+
+[connection signal="clicked_save_map" from="UI/SaveMap" to="." method="_on_save_map_input_clicked_save_map"]
+[connection signal="clicked_load_map" from="UI/LoadMap" to="." method="_on_load_map_clicked_load_map"]
+[connection signal="visibility_changed" from="UI/LoadMap" to="UI/LoadMap" method="_on_visibility_changed"]
