@@ -3,7 +3,7 @@ extends Node
 
 signal all_agents_have_completed
 
-var id
+var _test_id
 var snap_unit := 0.00001
 var movement_infos := {}
 var agent_ids : Array[int] = []
@@ -11,11 +11,13 @@ var agent_ids : Array[int] = []
 func _init() -> void:
 	set_process(false)
 
-func initialize(units: Array[Unit], test_id: String) -> void:
-	id = test_id
+func initialize(test_id: String, agents: Array[Agent]) -> void:
+	_test_id = test_id
 
-	for unit in units:
-		var agent: FluidAgentNavigation = unit.movement
+	movement_infos.clear()
+	agent_ids.clear()
+
+	for agent in agents:
 		movement_infos[agent.get_instance_id()] = MovementInfo.new()
 		movement_infos[agent.get_instance_id()].path = agent.path
 
@@ -52,9 +54,9 @@ func _on_agent_moved(id: int, position: Vector2) -> void:
 
 func export_data() -> void:
 	var screenshot_image: Image = get_viewport().get_texture().get_image()
-	screenshot_image.save_jpg('res://../_logs/' + id + '.jpg')
+	screenshot_image.save_jpg('res://../_logs/' + _test_id + '.jpg')
 
-	var file_name = id + '.csv'
+	var file_name = _test_id + '.csv'
 	var file = FileAccess.open('res://../_logs/' + file_name, FileAccess.WRITE)
 	file.store_csv_line(['agent_id', 'calculated_path_length', 'traveled_path_length', 'path_lengths_diff', 'completion_time', 'mean_velocity', 'velocity_standard_deviation', 'collision_count'])
 

@@ -1,30 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://csk4clgpbfbcs"]
+[gd_scene load_steps=4 format=3 uid="uid://b0vcy43lcl035"]
 
 [ext_resource type="Script" path="res://Unit.gd" id="1_kksq3"]
 [ext_resource type="Texture2D" uid="uid://cw2ut2e27tboj" path="res://unit.png" id="2_wydow"]
-[ext_resource type="Script" path="res://addons/fluid_navigation_system/scripts/fluid_agent_navigation.gd" id="3_slb73"]
-[ext_resource type="Script" path="res://addons/fluid_navigation_system/agent_attributes.gd" id="4_xuln8"]
-[ext_resource type="Script" path="res://addons/fluid_navigation_system/scripts/forces/path_follow_force.gd" id="5_qx8g0"]
-[ext_resource type="Script" path="res://addons/fluid_navigation_system/scripts/forces/avoidance_force.gd" id="6_32esm"]
-[ext_resource type="Script" path="res://addons/fluid_navigation_system/scripts/forces/separation_force.gd" id="7_g4gv7"]
 
 [sub_resource type="CircleShape2D" id="1"]
 radius = 30.0
-
-[sub_resource type="Resource" id="Resource_so0a5"]
-script = ExtResource("4_xuln8")
-mass = 1.0
-collision_radius = 100.0
-turning_radius = 90
-max_force = 0.5
-max_speed = 1
-neighbor_radius = 100.0
-priority = 1
-path_stopping_distance = 10
-
-[sub_resource type="Curve" id="Curve_78fvp"]
-_data = [Vector2(2.08165e-12, 0.25), 0.0, 0.75, 0, 1, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
 
 [node name="Unit" type="CharacterBody2D" groups=["unit"]]
 position = Vector2(2.08165e-12, 2.08165e-12)
@@ -38,24 +18,3 @@ texture = ExtResource("2_wydow")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("1")
-
-[node name="AgentMovement" type="Node2D" parent="." groups=["agent"]]
-script = ExtResource("3_slb73")
-show_debug = true
-agent_attributes = SubResource("Resource_so0a5")
-
-[node name="PathFollowForce" type="Node2D" parent="AgentMovement"]
-script = ExtResource("5_qx8g0")
-weight = 1.3
-debug_color = Color(0.811765, 0, 0.0117647, 1)
-
-[node name="AvoidanceForce" type="Node2D" parent="AgentMovement"]
-script = ExtResource("6_32esm")
-distance_scalar_curve = SubResource("Curve_78fvp")
-weight = 0.5
-debug_color = Color(0.231373, 0.470588, 1, 1)
-
-[node name="SeparationForce" type="Node2D" parent="AgentMovement"]
-script = ExtResource("7_g4gv7")
-weight = 0.2
-debug_color = Color(1, 1, 0, 1)

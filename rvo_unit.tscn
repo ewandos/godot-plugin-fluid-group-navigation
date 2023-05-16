@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://ce568we44kog0"]
+
+[ext_resource type="PackedScene" uid="uid://b0vcy43lcl035" path="res://unit.tscn" id="1_kjvsj"]
+[ext_resource type="PackedScene" uid="uid://q1d8didgra4f" path="res://rvo_agent.tscn" id="2_i21ey"]
+
+[node name="Unit" instance=ExtResource("1_kjvsj")]
+
+[node name="AgentMovement" parent="." index="2" instance=ExtResource("2_i21ey")]

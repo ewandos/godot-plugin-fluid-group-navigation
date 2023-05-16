@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://luiwa6h1wsyb"]
+
+[ext_resource type="Script" path="res://navigation_simulation.gd" id="1_ukg6q"]
+[ext_resource type="PackedScene" uid="uid://63cylnv08qsw" path="res://fluid_unit.tscn" id="2_54o57"]
+[ext_resource type="PackedScene" uid="uid://bi0f4xab27un2" path="res://navigation_grid_2d.tscn" id="9_hjlqq"]
+[ext_resource type="Script" path="res://path_renderer.gd" id="10_ew0pb"]
+
+[node name="NavigationSimulation" type="Node2D"]
+script = ExtResource("1_ukg6q")
+test_margin = 3
+unit = ExtResource("2_54o57")
+
+[node name="NavigationGrid2D" parent="." instance=ExtResource("9_hjlqq")]
+position = Vector2(0, 1)
+size = Vector2i(30, 30)
+blocked_cells = PackedVector2Array()
+grid_color = Color(0.984314, 0.976471, 0.964706, 0.227451)
+
+[node name="PathRenderer" type="Node2D" parent="."]
+script = ExtResource("10_ew0pb")

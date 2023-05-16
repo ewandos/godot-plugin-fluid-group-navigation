@@ -1,6 +1,5 @@
 extends Node2D
 
-
 signal completed_test
 enum Directions {LEFT, RIGHT, TOP, BOTTOM}
 
@@ -12,6 +11,7 @@ enum Directions {LEFT, RIGHT, TOP, BOTTOM}
 @export var unit: PackedScene
 
 @onready var navigation_grid := $NavigationGrid2D as NavigationGrid2D
+@onready var path_renderer := $PathRenderer as PathRenderer
 
 var test_index := 0
 var test_hash: int = Time.get_datetime_string_from_system().hash()
@@ -72,7 +72,7 @@ func initialize_test() -> void:
 			var start_world_position = navigation_grid.get_world_position(starting_cell)
 			var target_world_position = navigation_grid.get_world_position(target_cell)
 
-			var unit_instance = unit.instantiate() as Unit
+			var unit_instance = unit.instantiate()
 			units.append(unit_instance)
 			unit_instance.global_position = start_world_position
 			unit_instance.move_to(target_world_position)
@@ -80,8 +80,16 @@ func initialize_test() -> void:
 
 	data_crawler = DataCrawler.new()
 	add_child(data_crawler)
-	data_crawler.initialize(units, test_id)
+
+
+	var agents: Array[Agent] = []
+	for unit in units:
+		agents.append(unit.movement)
+
+	data_crawler.initialize(test_id, agents)
 	data_crawler.all_agents_have_completed.connect(_on_all_agents_have_completed)
+
+	path_renderer.initialize(agents)
 
 	test_index += 1
 	print('Initialization for test #', test_index, ' completed.')
@@ -90,9 +98,11 @@ func _on_all_agents_have_completed() -> void:
 	print('Completed test #' , test_index, '.')
 	data_crawler.export_data()
 	navigation_grid.clear_grid()
+	data_crawler.queue_free()
+
 	for unit in units:
 		unit.queue_free()
-	data_crawler.queue_free()
+
 	units.clear()
 	initialize_test()
 

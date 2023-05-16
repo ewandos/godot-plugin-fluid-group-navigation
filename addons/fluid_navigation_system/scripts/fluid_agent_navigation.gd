@@ -1,16 +1,9 @@
 @tool
-extends Node2D
+extends Agent
 class_name FluidAgentNavigation
 
 @export var show_debug: bool = false
 @export var agent_attributes: AgentAttributes
-
-# Pathfinding
-signal path_pushed(id: int, path: PackedVector2Array, target: Vector2, offset: Vector2)
-signal path_resolved(id: int)
-signal moved(id: int, position: Vector2)
-signal calculated_velocity(id: int, velocity: Vector2)
-signal collided(id: int)
 
 var path := []
 var path_offset := Vector2.ZERO
@@ -30,37 +23,37 @@ func _ready() -> void:
 	heading = heading.rotated(global_rotation)
 	force_nodes.assign(find_children("*", "BaseForce", true))
 
-	if neighbor_area == null and find_child("NeighborArea2D") == null:
-		var circle_shape_2d_res := CircleShape2D.new()
-		circle_shape_2d_res.radius = agent_attributes.neighbor_radius
+	var circle_shape_2d_res := CircleShape2D.new()
+	circle_shape_2d_res.radius = agent_attributes.neighbor_radius
 
-		var collision_shape_2d_node := CollisionShape2D.new()
-		collision_shape_2d_node.shape = circle_shape_2d_res
+	var collision_shape_2d_node := CollisionShape2D.new()
+	collision_shape_2d_node.shape = circle_shape_2d_res
 
-		var area_2d_node := Area2D.new()
-		area_2d_node.name = "NeighborArea2D"
-		area_2d_node.add_child(collision_shape_2d_node)
+	var area_2d_node := Area2D.new()
+	area_2d_node.name = "NeighborArea2D"
+	area_2d_node.add_child(collision_shape_2d_node)
 
-		area_2d_node.body_entered.connect(_on_body_entered)
-		add_child(area_2d_node)
-		neighbor_area = area_2d_node
+	area_2d_node.body_entered.connect(_on_body_entered)
+	add_child(area_2d_node)
+	neighbor_area = area_2d_node
 
 func _on_body_entered(body: Node2D) -> void:
 	if not body is Unit or body == get_parent(): return
 	if body.global_position.distance_to(global_position) < (agent_attributes.collision_radius / 2):
 		collided.emit(get_instance_id())
 
-func set_destination(target: Vector2, with_offset: Vector2 = Vector2.ZERO, append: bool = false) -> void:
+func set_destination(target: Vector2, append: bool = false) -> void:
 	if append && path.size() > 0:
 		path.append_array(_calculate_path(path[path.size() - 1], target))
 	else:
 		path = _calculate_path(global_position, target)
 
-	path_offset = with_offset
-	path_pushed.emit(get_instance_id(), path, global_position, with_offset)
+	path_pushed.emit(get_instance_id(), path, global_position)
 
 
 func calc_velocity() -> Vector2:
+	if not is_inside_tree(): await ready
+
 	if path.size() == 0:
 		if is_moving:
 			is_moving = false
