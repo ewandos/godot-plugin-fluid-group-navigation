@@ -4,6 +4,7 @@ extends Node2D
 signal completed_suite
 enum Directions {TOP, RIGHT, BOTTOM, LEFT}
 
+@export var export_data := false
 @export_range(1, 20) var random_iterations := 10
 @export_range(0, 100) var random_blocked_cells := 10
 @export_range(1, 20) var agent_count := 5
@@ -79,7 +80,8 @@ func initialize_test() -> void:
 			unit_instance.move_to(target_world_position)
 			add_child(unit_instance)
 
-	data_crawler = DataCrawler.new()
+
+	if export_data: data_crawler = DataCrawler.new()
 	add_child(data_crawler)
 
 
@@ -97,9 +99,12 @@ func initialize_test() -> void:
 
 func _on_all_agents_have_completed() -> void:
 	print('Completed test #' , test_index, '.')
-	data_crawler.export_data()
+
+	if export_data:
+		data_crawler.export_data()
+		data_crawler.queue_free()
+
 	navigation_grid.clear_grid()
-	data_crawler.queue_free()
 
 	for unit in units:
 		unit.queue_free()
