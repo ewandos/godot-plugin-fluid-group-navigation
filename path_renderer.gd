@@ -12,6 +12,7 @@ func initialize(agents: Array[Agent]):
 	_agents = agents
 	for agent in _agents:
 		show_path(agent.get_instance_id(), agent.path, agent.global_position)
+		agent.path_pushed.connect(show_path)
 
 func show_path(id: int, path: PackedVector2Array, starting_position: Vector2):
 	path.insert(0, starting_position)

@@ -6,5 +6,7 @@
 script = ExtResource("2_mfmn4")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." groups=["agent"]]
+target_desired_distance = 20.0
 avoidance_enabled = true
-max_speed = 10.0
+radius = 32.0
+max_speed = 1.0

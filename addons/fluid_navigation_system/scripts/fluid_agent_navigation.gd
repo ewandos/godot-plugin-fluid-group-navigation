@@ -5,14 +5,11 @@ class_name FluidAgentNavigation
 @export var show_debug: bool = false
 @export var agent_attributes: AgentAttributes
 
-var path := []
 var path_offset := Vector2.ZERO
 
 # Cached values
 var is_moving := false
 var acceleration := Vector2.ZERO
-var velocity := Vector2.ZERO
-var heading := Vector2.RIGHT
 var cummulative_steering_force := Vector2.ZERO
 var neighbors: Array[Node2D] = []
 var force_nodes: Array[BaseForce] = []

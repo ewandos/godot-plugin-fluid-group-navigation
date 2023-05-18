@@ -1,10 +1,11 @@
 extends Node2D
 
-signal completed_test
-enum Directions {LEFT, RIGHT, TOP, BOTTOM}
+
+signal completed_suite
+enum Directions {TOP, RIGHT, BOTTOM, LEFT}
 
 @export_range(1, 20) var random_iterations := 10
-@export_range(1, 100) var random_blocked_cells := 10
+@export_range(0, 100) var random_blocked_cells := 10
 @export_range(1, 20) var agent_count := 5
 @export var test_margin := 4
 @export var predefined_maps: Array[Map] = []
@@ -91,7 +92,7 @@ func initialize_test() -> void:
 
 	path_renderer.initialize(agents)
 
-	test_index += 1
+
 	print('Initialization for test #', test_index, ' completed.')
 
 func _on_all_agents_have_completed() -> void:
@@ -104,7 +105,13 @@ func _on_all_agents_have_completed() -> void:
 		unit.queue_free()
 
 	units.clear()
-	initialize_test()
+
+	test_index += 1
+
+	if test_index >= predefined_maps.size() + random_iterations:
+		completed_suite.emit()
+	else:
+		initialize_test()
 
 func _get_random_cell_on_border(direction: Directions) -> Vector2i:
 	var random_x := 0
