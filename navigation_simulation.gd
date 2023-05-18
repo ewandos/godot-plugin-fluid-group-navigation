@@ -1,6 +1,5 @@
 extends Node2D
 
-
 signal completed_suite
 enum Directions {TOP, RIGHT, BOTTOM, LEFT}
 
@@ -80,17 +79,15 @@ func initialize_test() -> void:
 			unit_instance.move_to(target_world_position)
 			add_child(unit_instance)
 
-
-	if export_data: data_crawler = DataCrawler.new()
-	add_child(data_crawler)
-
-
 	var agents: Array[Agent] = []
 	for unit in units:
 		agents.append(unit.movement)
 
-	data_crawler.initialize(test_id, agents)
-	data_crawler.all_agents_have_completed.connect(_on_all_agents_have_completed)
+	if export_data:
+		data_crawler = DataCrawler.new()
+		data_crawler.initialize(test_id, agents)
+		data_crawler.all_agents_have_completed.connect(_on_all_agents_have_completed)
+		add_child(data_crawler)
 
 	path_renderer.initialize(agents)
 
