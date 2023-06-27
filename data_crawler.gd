@@ -19,6 +19,8 @@ func initialize(test_id: String, agents: Array[Agent]) -> void:
 
 	for agent in agents:
 		movement_infos[agent.get_instance_id()] = MovementInfo.new()
+
+		if agent.path.size() == 0: await agent.path_pushed
 		movement_infos[agent.get_instance_id()].path = agent.path
 
 		agent.calculated_velocity.connect(_on_calculated_velocity)

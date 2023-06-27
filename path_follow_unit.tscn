@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c734snpky5ut"]
+[gd_scene load_steps=8 format=3 uid="uid://c734snpky5ut"]
 
 [ext_resource type="PackedScene" uid="uid://b0vcy43lcl035" path="res://unit.tscn" id="1_0w36i"]
 [ext_resource type="Script" path="res://addons/fluid_navigation_system/scripts/fluid_agent_navigation.gd" id="2_2okmb"]
@@ -16,22 +16,30 @@ neighbor_radius = 100.0
 priority = 1
 path_stopping_distance = 10
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_upu4n"]
+radius = 32.0
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_16m7f"]
 radius = 100.0
 
 [node name="Unit" instance=ExtResource("1_0w36i")]
 
-[node name="FluidAgent" type="Node2D" parent="." index="2" groups=["agent"]]
+[node name="AgentMovement" type="Node2D" parent="." index="2" groups=["agent"]]
 script = ExtResource("2_2okmb")
 show_debug = true
 agent_attributes = SubResource("Resource_so0a5")
 
-[node name="PathFollowForce" type="Node2D" parent="FluidAgent" index="0"]
+[node name="CollisionArea" type="Area2D" parent="AgentMovement" index="0"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AgentMovement/CollisionArea" index="0"]
+shape = SubResource("CircleShape2D_upu4n")
+
+[node name="PathFollowForce" type="Node2D" parent="AgentMovement" index="1"]
 script = ExtResource("4_cotgh")
 weight = 1.3
 debug_color = Color(0.811765, 0, 0.0117647, 1)
 
-[node name="NeighborArea2D" type="Area2D" parent="FluidAgent" index="1"]
+[node name="NeighborArea2D" type="Area2D" parent="AgentMovement" index="2"]
 
-[node name="17561" type="CollisionShape2D" parent="FluidAgent/NeighborArea2D" index="0"]
+[node name="17561" type="CollisionShape2D" parent="AgentMovement/NeighborArea2D" index="0"]
 shape = SubResource("CircleShape2D_16m7f")

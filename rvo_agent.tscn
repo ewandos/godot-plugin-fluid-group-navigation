@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://q1d8didgra4f"]
+[gd_scene load_steps=3 format=3 uid="uid://q1d8didgra4f"]
 
 [ext_resource type="Script" path="res://agent_wrapper.gd" id="2_mfmn4"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_q2unb"]
+radius = 32.0
 
 [node name="RvoAgent" type="Node2D"]
 script = ExtResource("2_mfmn4")
@@ -8,5 +11,13 @@ script = ExtResource("2_mfmn4")
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." groups=["agent"]]
 target_desired_distance = 20.0
 avoidance_enabled = true
-radius = 32.0
+radius = 30.0
+neighbor_distance = 1000.0
 max_speed = 1.0
+
+[node name="CollisionCheck" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionCheck"]
+shape = SubResource("CircleShape2D_q2unb")
+
+[connection signal="body_entered" from="CollisionCheck" to="." method="_on_collision_check_body_entered"]

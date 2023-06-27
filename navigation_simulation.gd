@@ -12,10 +12,13 @@ enum Directions {TOP, RIGHT, BOTTOM, LEFT}
 @export var unit: PackedScene
 
 @onready var navigation_grid := $NavigationGrid2D as NavigationGrid2D
+@onready var rvo_navigation_grid := $RvoNavigationGrid as RvoNavigationGrid
 @onready var path_renderer := $PathRenderer as PathRenderer
+@onready var breadcrumps_renderer := $BreadcrumpsRenderer as BreadcrumpsRenderer
 
 var test_index := 0
 var test_hash: int = Time.get_datetime_string_from_system().hash()
+const NOT_FOUND = -1
 
 var units: Array[Unit] = []
 var data_crawler: DataCrawler
@@ -34,6 +37,7 @@ func initialize_test() -> void:
 		var map: Map = predefined_maps[test_index]
 
 		navigation_grid.blocked_cells = map.blocked_cells
+		rvo_navigation_grid.blocked_cells = map.blocked_cells
 
 		for i in map.unit_spawns.size():
 			var starting_cell = map.unit_spawns[i]
@@ -48,11 +52,14 @@ func initialize_test() -> void:
 			unit_instance.move_to(target_world_position)
 			add_child(unit_instance)
 
-		test_id = var_to_str(test_hash) + '_' + var_to_str(test_index) + '_' + map.name
+		test_id = unit._bundled['names'][0] + '_' + var_to_str(test_hash) + '_' + var_to_str(test_index) + '_' + map.name
 
 	elif should_use_random_map:
 
-		test_id =  var_to_str(test_hash) + '_' + var_to_str(test_index)
+		var starting_cells := []
+		var target_cells := []
+
+		test_id = unit._bundled['names'][0] + '_' + var_to_str(test_hash) + '_' + var_to_str(test_index)
 
 		# place random blocked cells
 		var blocked_cells := PackedVector2Array()
@@ -62,13 +69,22 @@ func initialize_test() -> void:
 			blocked_cells.append(Vector2(random_x, random_y))
 
 		navigation_grid.blocked_cells = blocked_cells
+		rvo_navigation_grid.blocked_cells = blocked_cells
 
 		# place random units
 		for i in agent_count:
 			var starting_direction = i % Directions.keys().size()
 			var target_direction = (starting_direction + 2) % Directions.keys().size()
+
 			var starting_cell = _get_random_cell_on_border(starting_direction)
+			while starting_cells.find(starting_cell) != NOT_FOUND:
+				starting_cell = _get_random_cell_on_border(starting_direction)
+			starting_cells.append(starting_cell)
+
 			var target_cell = _get_random_cell_on_border(target_direction)
+			while target_cells.find(target_cell) != NOT_FOUND:
+				target_cell = _get_random_cell_on_border(target_direction)
+			target_cells.append(target_cell)
 
 			var start_world_position = navigation_grid.get_world_position(starting_cell)
 			var target_world_position = navigation_grid.get_world_position(target_cell)
@@ -90,6 +106,7 @@ func initialize_test() -> void:
 		add_child(data_crawler)
 
 	path_renderer.initialize(agents)
+	breadcrumps_renderer.initialize(agents)
 
 
 	print('Initialization for test #', test_index, ' completed.')
@@ -116,6 +133,7 @@ func _on_all_agents_have_completed() -> void:
 		initialize_test()
 
 func _get_random_cell_on_border(direction: Directions) -> Vector2i:
+
 	var random_x := 0
 	var random_y := 0
 	if direction == Directions.LEFT:
@@ -130,4 +148,8 @@ func _get_random_cell_on_border(direction: Directions) -> Vector2i:
 	elif direction == Directions.BOTTOM:
 		random_x = randi_range(test_margin, navigation_grid.size.x - test_margin - 1)
 		random_y = randi_range(navigation_grid.size.y - test_margin, navigation_grid.size.y - 1)
-	return Vector2i(random_x, random_y)
+	var random_position = Vector2i(random_x, random_y)
+
+
+
+	return random_position

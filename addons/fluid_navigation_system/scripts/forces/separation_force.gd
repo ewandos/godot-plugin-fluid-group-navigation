@@ -11,6 +11,7 @@ func _calculate_force(agent: FluidAgentNavigation) -> Vector2:
 
 		# ignore the own agent
 		if neighbor.is_in_group("agent") and neighbor.movement == agent: continue
+		if not neighbor.is_in_group("unit") and not neighbor.is_in_group('agent'): continue
 
 		var distance_to_neighbor := agent.global_position.distance_to(neighbor.global_position)
 

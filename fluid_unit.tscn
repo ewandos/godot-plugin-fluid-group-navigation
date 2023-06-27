@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://b0vcy43lcl035" path="res://unit.tscn" id="1_nnicc"]
 [ext_resource type="PackedScene" uid="uid://cuy6s2cnx6lid" path="res://fluid_agent.tscn" id="2_ti2dt"]
 
-[node name="Unit" instance=ExtResource("1_nnicc")]
+[node name="FluidUnit" instance=ExtResource("1_nnicc")]
+metadata/name = "fluid"
 
 [node name="AgentMovement" parent="." index="2" instance=ExtResource("2_ti2dt")]

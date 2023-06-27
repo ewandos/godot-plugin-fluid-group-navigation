@@ -5,3 +5,4 @@
 [node name="NavigationGrid2D" type="Node2D" groups=["grid"]]
 script = ExtResource("1_d7rg8")
 offset = Vector2(32, 32)
+blocked_cells = PackedVector2Array()

@@ -35,3 +35,7 @@ func _on_velocity_computed(safe_velocity: Vector2) -> void:
 
 func calc_velocity() -> Vector2:
 	return velocity
+
+func _on_collision_check_body_entered(body: Node2D) -> void:
+	if not body is Unit or body == get_parent(): return
+	collided.emit(get_instance_id())

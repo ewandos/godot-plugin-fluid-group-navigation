@@ -23,6 +23,6 @@ func _draw():
 	if (!visible_path || _paths.size() == 0): return
 	for key in _paths:
 		if (_paths[key].size() < 2): continue
-		draw_polyline(_paths[key], Color.MAGENTA, 1, true)
+		draw_polyline(_paths[key], Color.MAGENTA, 3, true)
 		for point in _paths[key]:
 			draw_circle(point, 5, Color.MAGENTA)

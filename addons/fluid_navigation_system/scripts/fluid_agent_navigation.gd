@@ -5,6 +5,8 @@ class_name FluidAgentNavigation
 @export var show_debug: bool = false
 @export var agent_attributes: AgentAttributes
 
+@onready var collision_area := $CollisionArea as Area2D
+
 var path_offset := Vector2.ZERO
 
 # Cached values
@@ -16,9 +18,14 @@ var force_nodes: Array[BaseForce] = []
 var heading_smoother := HeadingSmoother.new(10)
 var neighbor_area: Area2D
 
+
 func _ready() -> void:
 	heading = heading.rotated(global_rotation)
 	force_nodes.assign(find_children("*", "BaseForce", true))
+
+	collision_area.body_entered.connect(_on_body_entered)
+
+	if find_child("NeighborArea") != null: return
 
 	var circle_shape_2d_res := CircleShape2D.new()
 	circle_shape_2d_res.radius = agent_attributes.neighbor_radius
@@ -27,17 +34,15 @@ func _ready() -> void:
 	collision_shape_2d_node.shape = circle_shape_2d_res
 
 	var area_2d_node := Area2D.new()
-	area_2d_node.name = "NeighborArea2D"
+	area_2d_node.name = "NeighborArea"
 	area_2d_node.add_child(collision_shape_2d_node)
 
-	area_2d_node.body_entered.connect(_on_body_entered)
 	add_child(area_2d_node)
 	neighbor_area = area_2d_node
 
 func _on_body_entered(body: Node2D) -> void:
 	if not body is Unit or body == get_parent(): return
-	if body.global_position.distance_to(global_position) < (agent_attributes.collision_radius / 2):
-		collided.emit(get_instance_id())
+	collided.emit(get_instance_id())
 
 func set_destination(target: Vector2, append: bool = false) -> void:
 	if append && path.size() > 0:

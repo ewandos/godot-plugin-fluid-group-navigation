@@ -11,6 +11,7 @@ position = Vector2(2.08165e-12, 2.08165e-12)
 collision_mask = 2
 script = ExtResource("1_kksq3")
 color = Color(1, 0.607843, 0.580392, 1)
+metadata/name = "unit"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.176, 0.176)

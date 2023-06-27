@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://inoa5k7pf6n1"]
+
+[ext_resource type="Script" path="res://breadcrumps_renderer.gd" id="1_5xq3f"]
+
+[node name="BreadcrumpsRenderer" type="Node2D"]
+script = ExtResource("1_5xq3f")
