@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://4hvn5x4ivwvk"]
-
-[ext_resource type="Script" path="res://solid_obstacles_placer.gd" id="1_tsu1t"]
-
-[node name="SolidObstaclesPlacer" type="Node2D"]
-script = ExtResource("1_tsu1t")

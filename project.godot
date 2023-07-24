@@ -11,7 +11,8 @@ config_version=5
 [application]
 
 config/name="Fluid Navigation"
-run/main_scene="res://testbed.tscn"
+config/tags=PackedStringArray("project")
+run/main_scene="res://navigation_simulation.tscn"
 config/features=PackedStringArray("4.1")
 config/icon="res://assets/icon.svg"
 

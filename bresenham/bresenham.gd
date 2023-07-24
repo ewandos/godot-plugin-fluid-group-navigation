@@ -1,59 +1,35 @@
 class_name Bresenham
 extends Node
 
-func sgn(x: int) -> int:
-	if x > 0: return 1
-	if x < 0: return -1
-	return 0
-
 func get_cells_on_line(start: Vector2, end: Vector2) -> PackedVector2Array:
+
 	var cells := PackedVector2Array()
 
-	var dx = end.x - start.x
-	var dy = end.y - start.y
+	var x0 = start.x
+	var y0 = start.y
 
-	var incx = sgn(dx)
-	var incy = sgn(dy)
-	if dx < 0: dx = -dx
-	if dy < 0: dy = -dy
+	var x1 = end.x
+	var y1 = end.y
 
-	var pdx
-	var pdy
-	var ddx
-	var ddy
-	var deltaslowdirection
-	var deltafastdirection
+	var dx = abs(x1 - x0)
+	var dy = abs(y1 - y0)
+	var sx = 1 if x0 < x1 else -1
+	var sy = 1 if y0 < y1 else -1
+	var err = dx - dy
 
-	if dx < dy:
-		pdx = incx
-		pdy = 0
-		ddx = incx
-		ddy = incy
-		deltaslowdirection = dy
-		deltafastdirection = dx
-	else:
-		pdx = 0
-		pdy = incy
-		ddx = incx
-		ddy = incy
-		deltaslowdirection = dx
-		deltafastdirection = dy
+	while true:
+		cells.append(Vector2(x0, y0))
 
-	var x = start.x
-	var y = start.y
-	var err = deltafastdirection / 2
+		if x0 == x1 and y0 == y1:
+			break
 
-	cells.append(Vector2(x, y))
+		var e2 = 2 * err
 
-	for t in deltafastdirection:
-		err -= deltaslowdirection
-		if err < 0:
-			err += deltafastdirection
-			x += ddx
-			y += ddy
-		else:
-			x += pdx
-			y += pdy
-		cells.append(Vector2(x, y))
+		if e2 > -dy:
+			err -= dy
+			x0 += sx
+		if e2 < dx:
+			err += dx
+			y0 += sy
 
 	return cells

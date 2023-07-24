@@ -14,21 +14,21 @@ extends Node2D
 @export var grid_color := Color.WHEAT:
 	set = _set_grid_color
 
-var astar_grid: AStarGrid2D
+var astar_grid: ThetaStarGrid
 
 func _ready() -> void:
-	astar_grid = AStarGrid2D.new()
+	astar_grid = ThetaStarGrid.new()
 	astar_grid.size = size
 	astar_grid.cell_size = cell_size
 	astar_grid.offset = offset
 	astar_grid.jumping_enabled = true
-	astar_grid.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_ONLY_IF_NO_OBSTACLES
+	astar_grid.diagonal_mode = ThetaStarGrid.DIAGONAL_MODE_ONLY_IF_NO_OBSTACLES
 	astar_grid.update()
 
 func calculate_path(from: Vector2, to: Vector2) -> PackedVector2Array:
 	var from_id = (from / cell_size).floor()
 	var to_id = (to / cell_size).floor()
-	return astar_grid.get_point_path(from_id, to_id)
+	return astar_grid.calculate_path(from_id, to_id, true)
 
 func _set_size(value: Vector2) -> void:
 	size = value
