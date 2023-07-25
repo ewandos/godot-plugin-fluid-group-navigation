@@ -19,7 +19,6 @@ func set_destination(movement_target: Vector2, append: bool = false):
 	navigation_agent.set_target_position(movement_target)
 
 func _physics_process(delta):
-
 	var next_path_position: Vector2 = navigation_agent.get_next_path_position()
 	var current_agent_position: Vector2 = global_position
 	var new_velocity: Vector2 = (next_path_position - current_agent_position).normalized() * movement_speed

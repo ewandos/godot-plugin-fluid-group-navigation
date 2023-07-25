@@ -23,6 +23,7 @@ func initialize(test_id: String, agents: Array[Agent]) -> void:
 		if agent.path.size() == 0: await agent.path_pushed
 		movement_infos[agent.get_instance_id()].path = agent.path
 
+		agent.path_pushed.connect(_on_agent_path_pushed)
 		agent.calculated_velocity.connect(_on_calculated_velocity)
 		agent.path_resolved.connect(_on_agent_path_resolved)
 		agent.collided.connect(_on_agent_collided)
@@ -54,6 +55,10 @@ func _on_agent_collided(id: int) -> void:
 
 func _on_agent_moved(id: int, position: Vector2) -> void:
 	movement_infos[id].positions.append(position)
+
+func _on_agent_path_pushed(id: int, path: PackedVector2Array, current_position: Vector2) -> void:
+	if movement_infos[id].path != null:
+		movement_infos[id].path = path
 
 func export_data() -> void:
 	var screenshot_image: Image = get_viewport().get_texture().get_image()

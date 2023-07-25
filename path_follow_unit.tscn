@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://c734snpky5ut"]
 
-[ext_resource type="PackedScene" uid="uid://b0vcy43lcl035" path="res://unit.tscn" id="1_0w36i"]
+[ext_resource type="PackedScene" uid="uid://b0vcy43lcl035" path="res://Unit.tscn" id="1_0w36i"]
 [ext_resource type="Script" path="res://addons/fluid_navigation_system/scripts/fluid_agent_navigation.gd" id="2_2okmb"]
 [ext_resource type="Script" path="res://addons/fluid_navigation_system/agent_attributes.gd" id="3_qtdto"]
 [ext_resource type="Script" path="res://addons/fluid_navigation_system/scripts/forces/path_follow_force.gd" id="4_cotgh"]
@@ -23,6 +23,7 @@ radius = 32.0
 radius = 100.0
 
 [node name="Unit" instance=ExtResource("1_0w36i")]
+speed_modifier = 100
 
 [node name="AgentMovement" type="Node2D" parent="." index="2" groups=["agent"]]
 script = ExtResource("2_2okmb")

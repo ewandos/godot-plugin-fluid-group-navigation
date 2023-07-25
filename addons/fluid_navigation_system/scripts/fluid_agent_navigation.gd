@@ -65,7 +65,7 @@ func calc_velocity() -> Vector2:
 	_steer()
 	queue_redraw()
 	is_moving = true
-	calculated_velocity.emit(get_instance_id(), velocity)
+	calculated_velocity.emit(get_instance_id(), velocity * 100)
 	moved.emit(get_instance_id(), global_position)
 	return velocity
 
