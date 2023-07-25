@@ -9,11 +9,9 @@ radius = 32.0
 script = ExtResource("2_mfmn4")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." groups=["agent"]]
-target_desired_distance = 20.0
 avoidance_enabled = true
-radius = 30.0
-time_horizon_obstacles = 1.0
-max_speed = 1.0
+radius = 40.0
+time_horizon_agents = 2.0
 
 [node name="CollisionCheck" type="Area2D" parent="."]
 

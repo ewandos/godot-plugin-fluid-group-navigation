@@ -43,6 +43,7 @@ func _process(delta: float) -> void:
 		set_process(false)
 
 func _on_agent_path_resolved(id: int) -> void:
+	print('Agent #', id, ' resolved path.')
 	movement_infos[id].is_completed = true
 
 func _on_calculated_velocity(id: int, velocity: Vector2) -> void:

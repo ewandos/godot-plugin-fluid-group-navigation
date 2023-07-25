@@ -3,21 +3,23 @@
 class_name AgentWrapper
 extends Agent
 
-@export var movement_speed: float = 4.0
+@export var movement_speed: float = 100
 @onready var navigation_agent := $NavigationAgent2D as NavigationAgent2D
 
+var is_moving := false
 var heading_smoother := HeadingSmoother.new(10)
 
 func _ready() -> void:
 	heading = heading.rotated(global_rotation)
 	navigation_agent.velocity_computed.connect(_on_velocity_computed)
-	navigation_agent.target_reached.connect(func(): path_resolved.emit(get_instance_id()))
 	navigation_agent.path_changed.connect(_on_path_changed)
+	navigation_agent.navigation_finished.connect(func(): path_resolved.emit(get_instance_id()))
 
 func set_destination(movement_target: Vector2, append: bool = false):
 	navigation_agent.set_target_position(movement_target)
 
 func _physics_process(delta):
+
 	var next_path_position: Vector2 = navigation_agent.get_next_path_position()
 	var current_agent_position: Vector2 = global_position
 	var new_velocity: Vector2 = (next_path_position - current_agent_position).normalized() * movement_speed

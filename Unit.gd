@@ -4,11 +4,12 @@ class_name Unit
 @export var color: Color
 var is_selected := false
 
+@export var speed_modifier := 1
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var movement := $AgentMovement as Agent
 
 func _physics_process(_delta):
-	velocity = movement.calc_velocity() * 100
+	velocity = movement.calc_velocity() * speed_modifier
 	sprite.look_at(global_position + movement.heading)
 	move_and_slide()
 

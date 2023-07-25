@@ -1,8 +1,8 @@
 [gd_scene load_steps=12 format=3 uid="uid://luiwa6h1wsyb"]
 
 [ext_resource type="Script" path="res://navigation_simulation.gd" id="1_ukg6q"]
-[ext_resource type="Resource" path="res://maps/navigation_test.tres" id="2_e3wcv"]
-[ext_resource type="PackedScene" uid="uid://63cylnv08qsw" path="res://fluid_unit.tscn" id="3_mxsq7"]
+[ext_resource type="Resource" path="res://maps/boulder.tres" id="2_ybmtf"]
+[ext_resource type="PackedScene" uid="uid://ce568we44kog0" path="res://rvo_unit.tscn" id="3_ggh8s"]
 [ext_resource type="PackedScene" uid="uid://inoa5k7pf6n1" path="res://breadcrumps_renderer.tscn" id="5_edxfc"]
 [ext_resource type="Texture2D" uid="uid://btu4jf4cosvf7" path="res://tile.jpg" id="6_ai07o"]
 [ext_resource type="Script" path="res://rvo_navigation_grid.gd" id="8_j66tg"]
@@ -32,8 +32,8 @@ random_iterations = 2
 random_blocked_cells = 50
 agent_count = 10
 test_margin = 1
-predefined_maps = Array[Resource("res://map.gd")]([ExtResource("2_e3wcv")])
-unit = ExtResource("3_mxsq7")
+predefined_maps = Array[Resource("res://map.gd")]([ExtResource("2_ybmtf")])
+unit = ExtResource("3_ggh8s")
 
 [node name="NavigationGrid2D" parent="." instance=ExtResource("9_hjlqq")]
 position = Vector2(0, 1)
