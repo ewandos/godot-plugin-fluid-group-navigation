@@ -15,9 +15,7 @@ func _calculate_force(agent: FluidAgentNavigation) -> Vector2:
 		if not neighbor.is_in_group("unit") and not neighbor.is_in_group('agent'): continue
 
 		var direction_to_neighbor := agent.global_position.direction_to(neighbor.global_position)
-
 		var is_in_front := counter_clockwise_perp.cross(direction_to_neighbor) > 0
-
 		if not is_in_front: continue
 
 		var to_neighbor = neighbor.global_position - agent.global_position
@@ -29,14 +27,14 @@ func _calculate_force(agent: FluidAgentNavigation) -> Vector2:
 		var approaching_progress = 1 - ((agent.global_position.distance_to(neighbor.global_position) - collision_radius_of_neighbor) / neighbor_radius_of_neighbor)
 		var sidestep_force = sidestep_direction.normalized()
 		sidestep_force *= agent.agent_attributes.max_force
-		steering_force += sidestep_force
 
 		var priority_scalar: float = neighbor.movement.agent_attributes.priority / agent.agent_attributes.priority
 		priority_scalar = floorf(priority_scalar)
-		steering_force *= priority_scalar
-		steering_force.limit_length(agent.agent_attributes.max_force)
+		sidestep_force *= priority_scalar
+		sidestep_force.limit_length(agent.agent_attributes.max_force)
 		var distance_scalar = distance_scalar_curve.sample(approaching_progress)
+		sidestep_force *= distance_scalar
 
-		steering_force *= distance_scalar
+		steering_force += sidestep_force
 
 	return steering_force

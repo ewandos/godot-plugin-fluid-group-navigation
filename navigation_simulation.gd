@@ -3,7 +3,8 @@ extends Node2D
 signal completed_suite
 enum Directions {TOP, RIGHT, BOTTOM, LEFT}
 
-@export var export_data := false
+@export var export_data := DataExport.DETAILED
+
 @export_range(1, 20) var random_iterations := 10
 @export_range(0, 100) var random_blocked_cells := 10
 @export_range(1, 20) var agent_count := 5
@@ -19,19 +20,29 @@ enum Directions {TOP, RIGHT, BOTTOM, LEFT}
 var test_index := 0
 var test_hash: int = Time.get_datetime_string_from_system().hash()
 const NOT_FOUND = -1
+var random_seed := 1602
 
 var units: Array[Unit] = []
 var data_crawler: DataCrawler
 
+enum DataExport {
+	NONE,
+	DETAILED,
+	MEANS
+}
+
 func _ready() -> void:
 	randomize()
-	seed(1602)
+	seed(random_seed)
 	initialize_test()
 
 func initialize_test() -> void:
 	var should_use_predefined_maps: bool = test_index < predefined_maps.size()
 	var should_use_random_map: bool = not should_use_predefined_maps and test_index < (predefined_maps.size() + random_iterations)
 	var test_id: String
+	var test_attributes := TestAttributes.new()
+
+	test_attributes.agent_name = unit._bundled['names'][0]
 
 	if should_use_predefined_maps:
 		var map: Map = predefined_maps[test_index]
@@ -52,14 +63,17 @@ func initialize_test() -> void:
 			unit_instance.move_to(target_world_position)
 			add_child(unit_instance)
 
-		test_id = unit._bundled['names'][0] + '_' + var_to_str(test_hash) + '_' + var_to_str(test_index) + '_' + map.name
+		test_id = var_to_str(test_hash)
+
+		test_attributes.map_name = map.name
+		test_attributes.blocked_cells_count = map.blocked_cells.size()
 
 	elif should_use_random_map:
 
 		var starting_cells := []
 		var target_cells := []
 
-		test_id = unit._bundled['names'][0] + '_' + var_to_str(test_hash) + '_' + var_to_str(test_index)
+		test_id = var_to_str(test_hash)
 
 		# place random blocked cells
 		var blocked_cells := PackedVector2Array()
@@ -70,6 +84,10 @@ func initialize_test() -> void:
 
 		navigation_grid.blocked_cells = blocked_cells
 		rvo_navigation_grid.blocked_cells = blocked_cells
+
+		test_attributes.blocked_cells_count = blocked_cells.size()
+		test_attributes.seed = random_seed
+		test_attributes.iteration = test_index
 
 		# place random units
 		for i in agent_count:
@@ -101,7 +119,12 @@ func initialize_test() -> void:
 
 	if export_data:
 		data_crawler = DataCrawler.new()
-		data_crawler.initialize(test_id, agents)
+		test_attributes.test_id = test_id
+		test_attributes.agents = agents
+		test_attributes.map_size = navigation_grid.size
+		test_attributes.agent_count = agents.size()
+
+		data_crawler.initialize(test_attributes)
 		data_crawler.all_agents_have_completed.connect(_on_all_agents_have_completed)
 		add_child(data_crawler)
 
@@ -114,8 +137,12 @@ func initialize_test() -> void:
 func _on_all_agents_have_completed() -> void:
 	print('Completed test #' , test_index, '.')
 
-	if export_data:
-		data_crawler.export_data()
+	if export_data != DataExport.NONE:
+
+		if export_data == DataExport.DETAILED:
+			data_crawler.export_data_detailed()
+		elif export_data == DataExport.MEANS:
+			data_crawler.export_data_means()
 		data_crawler.queue_free()
 
 	navigation_grid.clear_grid()

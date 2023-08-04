@@ -69,7 +69,7 @@ func calculate_path(start_pos: Vector2, end_pos: Vector2, use_theta := false) ->
 
 
 			if use_theta and is_in_line_of_sight(came_from[current], neighbor_pos):
-				var tentative_g_score = g_score[current] + came_from[current].distance_to(neighbor_pos)
+				var tentative_g_score = g_score[came_from[current]] + came_from[current].distance_to(neighbor_pos)
 
 				if neighbor_pos not in open_set:
 					open_set.append(neighbor_pos)
@@ -82,7 +82,7 @@ func calculate_path(start_pos: Vector2, end_pos: Vector2, use_theta := false) ->
 
 			else:
 				# Calculate the tentative g_score based on the movement direction
-				var tentative_g_score = g_score[current] + (1.414 if direction.x != 0 && direction.y != 0 else 1)
+				var tentative_g_score = g_score[current] + current.distance_to(neighbor_pos)
 
 				if neighbor_pos not in open_set:
 					open_set.append(neighbor_pos)

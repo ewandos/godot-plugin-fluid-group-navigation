@@ -83,8 +83,8 @@ func _reset() -> void:
 
 
 func _draw() -> void:
-	draw_line(Vector2(navigation_grid.size.x / 2 * navigation_grid.cell_size.x, 0), Vector2(navigation_grid.size.x / 2 * navigation_grid.cell_size.x, navigation_grid.size.y * navigation_grid.cell_size.y), Color.RED, 5)
-	draw_line(Vector2(0, navigation_grid.size.y / 2 * navigation_grid.cell_size.y), Vector2(navigation_grid.size.x * navigation_grid.cell_size.x, navigation_grid.size.y / 2 * navigation_grid.cell_size.y), Color.RED, 5)
+	draw_line(Vector2(navigation_grid.size.x / 2 * navigation_grid.cell_size.x, 0), Vector2(navigation_grid.size.x / 2 * navigation_grid.cell_size.x, navigation_grid.size.y * navigation_grid.cell_size.y), Color.BLACK, 5)
+	draw_line(Vector2(0, navigation_grid.size.y / 2 * navigation_grid.cell_size.y), Vector2(navigation_grid.size.x * navigation_grid.cell_size.x, navigation_grid.size.y / 2 * navigation_grid.cell_size.y), Color.BLACK, 5)
 
 	if current_unit_route.size() == 1:
 		var start_point = navigation_grid.get_world_position(current_unit_route[0])
