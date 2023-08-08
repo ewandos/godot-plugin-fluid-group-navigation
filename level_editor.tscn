@@ -36,7 +36,7 @@ texture = ExtResource("2_blx5e")
 
 [node name="NavigationGrid2D" type="Node2D" parent="."]
 script = ExtResource("1_3vg6i")
-size = Vector2i(30, 30)
+size = Vector2(30, 30)
 offset = Vector2(32, 32)
 blocked_cells = PackedVector2Array()
 grid_color = Color(0, 0, 0, 1)

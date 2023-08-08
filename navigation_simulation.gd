@@ -6,7 +6,7 @@ enum Directions {TOP, RIGHT, BOTTOM, LEFT}
 @export var export_data := DataExport.DETAILED
 
 @export_range(1, 20) var random_iterations := 10
-@export_range(0, 100) var random_blocked_cells := 10
+@export_range(0, 315) var random_blocked_cells := 10
 @export_range(1, 20) var agent_count := 5
 @export var test_margin := 4
 @export var predefined_maps: Array[Map] = []
@@ -123,6 +123,7 @@ func initialize_test() -> void:
 		test_attributes.agents = agents
 		test_attributes.map_size = navigation_grid.size
 		test_attributes.agent_count = agents.size()
+		test_attributes.cells_density = navigation_grid.get_cells_density()
 
 		data_crawler.initialize(test_attributes)
 		data_crawler.all_agents_have_completed.connect(_on_all_agents_have_completed)
@@ -156,6 +157,7 @@ func _on_all_agents_have_completed() -> void:
 
 	if test_index >= predefined_maps.size() + random_iterations:
 		completed_suite.emit()
+		get_tree().quit()
 	else:
 		initialize_test()
 

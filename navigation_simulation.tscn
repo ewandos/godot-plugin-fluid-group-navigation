@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://luiwa6h1wsyb"]
 
 [ext_resource type="Script" path="res://navigation_simulation.gd" id="1_ukg6q"]
-[ext_resource type="PackedScene" uid="uid://ce568we44kog0" path="res://rvo_unit.tscn" id="2_o6lm2"]
+[ext_resource type="PackedScene" uid="uid://63cylnv08qsw" path="res://fluid_unit.tscn" id="2_6127y"]
 [ext_resource type="PackedScene" uid="uid://inoa5k7pf6n1" path="res://breadcrumps_renderer.tscn" id="5_edxfc"]
 [ext_resource type="Texture2D" uid="uid://btu4jf4cosvf7" path="res://tile.jpg" id="6_ai07o"]
 [ext_resource type="Script" path="res://rvo_navigation_grid.gd" id="8_j66tg"]
@@ -27,15 +27,14 @@ sources/0 = SubResource("TileSetAtlasSource_u1j33")
 [node name="NavigationSimulation" type="Node2D"]
 script = ExtResource("1_ukg6q")
 export_data = 2
-random_iterations = 2
-random_blocked_cells = 50
-agent_count = 10
+random_blocked_cells = 315
+agent_count = 20
 test_margin = 1
-unit = ExtResource("2_o6lm2")
+unit = ExtResource("2_6127y")
 
 [node name="NavigationGrid2D" parent="." instance=ExtResource("9_hjlqq")]
 position = Vector2(0, 1)
-size = Vector2i(30, 30)
+size = Vector2(30, 30)
 grid_color = Color(0.984314, 0.976471, 0.964706, 0.227451)
 
 [node name="PathRenderer" type="Node2D" parent="."]

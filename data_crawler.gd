@@ -66,7 +66,7 @@ func export_data_detailed() -> void:
 
 	var file_name = _test_attributes.test_id + '.csv'
 	var file = FileAccess.open('res://../_logs/' + file_name, FileAccess.WRITE)
-	file.store_csv_line(['agent_id', 'calculated_path_length', 'traveled_path_length', 'path_lengths_diff', 'completion_time', 'mean_velocity', 'velocity_standard_deviation', 'collision_count'])
+	file.store_csv_line(['agent_id', 'calculated_path_length', 'traveled_path_length', 'path_lengths_diff', 'completion_time', 'mean_velocity', 'velocity_standard_deviation', 'collision_count'], ';')
 
 	var summed_calculated_path_lengths := 0.0
 	var summed_traveled_path_lengths := 0.0
@@ -93,7 +93,7 @@ func export_data_detailed() -> void:
 		summed_velocity_standard_deviations += velocity_standard_deviation
 		summed_collision_count += collision_count
 
-		file.store_csv_line([agent_id, snappedf(calculated_path_length, snap_unit), snappedf(traveled_path_length, snap_unit), snappedf(path_lengths_diff, snap_unit), snappedf(completion_time_in_ms, snap_unit), snappedf(mean_velocity, snap_unit), snappedf(velocity_standard_deviation, snap_unit), collision_count])
+		file.store_csv_line([agent_id, snappedf(calculated_path_length, snap_unit), snappedf(traveled_path_length, snap_unit), snappedf(path_lengths_diff, snap_unit), snappedf(completion_time_in_ms, snap_unit), snappedf(mean_velocity, snap_unit), snappedf(velocity_standard_deviation, snap_unit), collision_count], ';')
 
 	var mean_path_lengths := summed_calculated_path_lengths / movement_infos.size()
 	var mean_traveled_path_lengths := summed_traveled_path_lengths / movement_infos.size()
@@ -104,7 +104,7 @@ func export_data_detailed() -> void:
 	var mean_collision_count := summed_collision_count / movement_infos.size()
 
 	file.store_csv_line([])
-	file.store_csv_line(['mean', snappedf(mean_path_lengths, snap_unit), snappedf(mean_traveled_path_lengths, snap_unit), snappedf(mean_path_lengths_diffs, snap_unit), snappedf(mean_completion_times_in_ms, snap_unit), snappedf(mean_mean_velocity, snap_unit), snappedf(mean_velocity_standard_deviations, snap_unit), snappedf(mean_collision_count, snap_unit)])
+	file.store_csv_line(['mean', snappedf(mean_path_lengths, snap_unit), snappedf(mean_traveled_path_lengths, snap_unit), snappedf(mean_path_lengths_diffs, snap_unit), snappedf(mean_completion_times_in_ms, snap_unit), snappedf(mean_mean_velocity, snap_unit), snappedf(mean_velocity_standard_deviations, snap_unit), snappedf(mean_collision_count, snap_unit)], ';')
 
 
 func export_data_means() -> void:
@@ -165,15 +165,15 @@ func export_data_means() -> void:
 			'test_id',
 			'iteration_id',
 			'percentage_of_blocked_cells',
+			'cell_density',
 			'agent_count',
 			'mean_calculated_path_length',
 			'mean_traveled_path_lengths',
 			'mean_path_lengths_diffs',
-			'mean_completion_times_in_ms',
 			'mean_mean_velocity',
 			'mean_velocity_standard_deviations',
 			'mean_collision_count'
-		])
+		], ';')
 	else:
 		file =  FileAccess.open('res://../_logs/' + file_name, FileAccess.READ_WRITE)
 		file.seek_end()
@@ -182,14 +182,14 @@ func export_data_means() -> void:
 		_test_attributes.test_id,
 		iteration_id,
 		snappedf(percentage_of_blocked_cells, snap_unit),
+		snappedf(_test_attributes.cells_density, snap_unit),
 		_test_attributes.agent_count,
 		snappedf(mean_path_lengths, snap_unit),
 		snappedf(mean_traveled_path_lengths, snap_unit),
 		snappedf(mean_path_lengths_diffs, snap_unit),
-		snappedf(mean_completion_times_in_ms, snap_unit),
 		snappedf(mean_mean_velocity, snap_unit),
 		snappedf(mean_velocity_standard_deviations, snap_unit),
 		snappedf(mean_collision_count, snap_unit)
-	])
+	], ';')
 
 	file.close()

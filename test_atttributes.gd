@@ -10,3 +10,4 @@ var seed: int
 var iteration: int
 var agents: Array[Agent]
 var agent_name: String
+var cells_density: float

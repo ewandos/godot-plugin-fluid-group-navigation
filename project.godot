@@ -31,6 +31,10 @@ movie_writer/movie_file="/Users/pewert/Desktop/recording.avi"
 
 enabled=PackedStringArray("res://addons/fluid_navigation_system/plugin.cfg")
 
+[filesystem]
+
+import/blender/enabled=false
+
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
