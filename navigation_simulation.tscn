@@ -1,9 +1,15 @@
-[gd_scene load_steps=11 format=3 uid="uid://luiwa6h1wsyb"]
+[gd_scene load_steps=17 format=3 uid="uid://luiwa6h1wsyb"]
 
 [ext_resource type="Script" path="res://navigation_simulation.gd" id="1_ukg6q"]
-[ext_resource type="PackedScene" uid="uid://63cylnv08qsw" path="res://fluid_unit.tscn" id="2_6127y"]
+[ext_resource type="PackedScene" uid="uid://ce568we44kog0" path="res://rvo_unit.tscn" id="2_o6lm2"]
+[ext_resource type="Resource" uid="uid://dhl3abqidfjtr" path="res://maps/boulder.tres" id="2_s72ky"]
+[ext_resource type="Resource" uid="uid://b0a1v3efh3iw1" path="res://maps/city.tres" id="3_a2ufi"]
+[ext_resource type="Resource" uid="uid://bo4stvo7ufxpx" path="res://maps/forest_line.tres" id="4_mvbek"]
+[ext_resource type="Resource" uid="uid://c6fdtbiju3gb3" path="res://maps/funnel.tres" id="5_b3l6e"]
 [ext_resource type="PackedScene" uid="uid://inoa5k7pf6n1" path="res://breadcrumps_renderer.tscn" id="5_edxfc"]
+[ext_resource type="Resource" uid="uid://bpqs2yadidgjo" path="res://maps/labyrinth.tres" id="6_08ugg"]
 [ext_resource type="Texture2D" uid="uid://btu4jf4cosvf7" path="res://tile.jpg" id="6_ai07o"]
+[ext_resource type="Resource" uid="uid://drr2gfkwoef7s" path="res://maps/tunnel.tres" id="7_fg5jo"]
 [ext_resource type="Script" path="res://rvo_navigation_grid.gd" id="8_j66tg"]
 [ext_resource type="PackedScene" uid="uid://bi0f4xab27un2" path="res://navigation_grid_2d.tscn" id="9_hjlqq"]
 [ext_resource type="Script" path="res://path_renderer.gd" id="10_ew0pb"]
@@ -27,10 +33,10 @@ sources/0 = SubResource("TileSetAtlasSource_u1j33")
 [node name="NavigationSimulation" type="Node2D"]
 script = ExtResource("1_ukg6q")
 export_data = 2
-random_blocked_cells = 315
-agent_count = 20
+random_iterations = 0
 test_margin = 1
-unit = ExtResource("2_6127y")
+predefined_maps = Array[Resource("res://map.gd")]([ExtResource("2_s72ky"), ExtResource("3_a2ufi"), ExtResource("4_mvbek"), ExtResource("5_b3l6e"), ExtResource("6_08ugg"), ExtResource("7_fg5jo")])
+unit = ExtResource("2_o6lm2")
 
 [node name="NavigationGrid2D" parent="." instance=ExtResource("9_hjlqq")]
 position = Vector2(0, 1)

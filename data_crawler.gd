@@ -148,7 +148,7 @@ func export_data_means() -> void:
 	var percentage_of_blocked_cells := (_test_attributes.blocked_cells_count / (_test_attributes.map_size.x * _test_attributes.map_size.y)) * 100
 	## Export
 
-	var iteration_id: String = (var_to_str(_test_attributes.seed) + '_' + var_to_str(_test_attributes.iteration)) if _test_attributes.seed != null else _test_attributes.map_name
+	var iteration_id: String = (var_to_str(_test_attributes.seed) + '_' + var_to_str(_test_attributes.iteration)) if _test_attributes.seed != 0 else _test_attributes.map_name
 
 	var screenshot_image: Image = get_viewport().get_texture().get_image()
 	screenshot_image.save_jpg('res://../_logs/' + _test_attributes.test_id + '_' + iteration_id + '.jpg')

@@ -5,7 +5,7 @@ enum Directions {TOP, RIGHT, BOTTOM, LEFT}
 
 @export var export_data := DataExport.DETAILED
 
-@export_range(1, 20) var random_iterations := 10
+@export_range(0, 20) var random_iterations := 10
 @export_range(0, 315) var random_blocked_cells := 10
 @export_range(1, 20) var agent_count := 5
 @export var test_margin := 4
